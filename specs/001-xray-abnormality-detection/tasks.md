@@ -164,32 +164,32 @@
 
 ### Dataset Preparation (Developer 3)
 
-- [ ] T058 [US3] [Dev3] Create `notebooks/finetune_yolo.ipynb` notebook with markdown documentation
-- [ ] T059 [US3] [Dev3] Add dataset download cell using Roboflow API (API key: wQ9S049DhK8xjIhNy6zv, project: chest-xray-symptom-detection, version 3, format: YOLOv11)
-- [ ] T060 [US3] [Dev3] Add auto-labeling cell for images without bounding boxes (scan labels directory, assign "Bình thường" class to images with empty/missing .txt files)
-- [ ] T061 [US3] [Dev3] Add class mapping verification cell (confirm all 14 English classes map to Vietnamese, update YOLO dataset.yaml with Vietnamese names)
+- [X] T058 [US3] [Dev3] Create `notebooks/finetune_yolo.ipynb` notebook with markdown documentation
+- [X] T059 [US3] [Dev3] Add dataset download cell using Roboflow API (API key: wQ9S049DhK8xjIhNy6zv, project: chest-xray-symptom-detection, version 3, format: YOLOv11)
+- [X] T060 [US3] [Dev3] Add auto-labeling cell for images without bounding boxes (scan labels directory, assign "Bình thường" class to images with empty/missing .txt files)
+- [X] T061 [US3] [Dev3] Add class mapping verification cell (confirm all 14 English classes map to Vietnamese, update YOLO dataset.yaml with Vietnamese names)
 
 ### Preprocessing and Augmentation (Developer 3 with Developer 1's filters)
 
-- [ ] T062 [US3] [Dev3] Import filter implementations from `backend/src/filters/` into notebook
-- [ ] T063 [US3] [Dev3] Add preprocessing cell applying selected filters to training images (Histogram Equalization + Gaussian Blur for contrast enhancement)
-- [ ] T064 [US3] [Dev3] Add data augmentation cell with filter-based augmentation (random filter combinations, geometric transforms, brightness/contrast adjustments)
-- [ ] T065 [US3] [Dev3] Add augmented dataset statistics visualization (class distribution, image dimensions, normal vs abnormal ratio)
+- [X] T062 [US3] [Dev3] Import filter implementations from `backend/src/filters/` into notebook
+- [X] T063 [US3] [Dev3] Add preprocessing cell applying selected filters to training images (Histogram Equalization + Gaussian Blur for contrast enhancement)
+- [X] T064 [US3] [Dev3] Add data augmentation cell with filter-based augmentation (random filter combinations, geometric transforms, brightness/contrast adjustments)
+- [X] T065 [US3] [Dev3] Add augmented dataset statistics visualization (class distribution, image dimensions, normal vs abnormal ratio)
 
 ### Model Training (Developer 3)
 
-- [ ] T066 [US3] [Dev3] Add WandB initialization cell (project name: "chest-xray-detection", log hyperparameters)
-- [ ] T067 [US3] [Dev3] Add YOLOv11s training cell with ultralytics (load base yolov11s.pt, set hyperparameters: epochs=50, batch=16, imgsz=640, patience=10)
-- [ ] T068 [US3] [Dev3] Add tqdm progress tracking integration (epoch progress, batch progress, loss/mAP display)
-- [ ] T069 [US3] [Dev3] Add WandB logging integration (log loss curves, mAP, precision, recall per epoch)
-- [ ] T070 [US3] [Dev3] Add model export cell (save best weights to `backend/models/yolov11s_finetuned.pt`)
+- [X] T066 [US3] [Dev3] Add WandB initialization cell (project name: "chest-xray-detection", log hyperparameters)
+- [X] T067 [US3] [Dev3] Add YOLOv11s training cell with ultralytics (load base yolov11s.pt, set hyperparameters: epochs=50, batch=16, imgsz=640, patience=10)
+- [X] T068 [US3] [Dev3] Add tqdm progress tracking integration (epoch progress, batch progress, loss/mAP display)
+- [X] T069 [US3] [Dev3] Add WandB logging integration (log loss curves, mAP, precision, recall per epoch)
+- [X] T070 [US3] [Dev3] Add model export cell (save best weights to `backend/models/yolov11s_finetuned.pt`)
 
 ### Validation and Analysis (Developer 3)
 
-- [ ] T071 [US3] [Dev3] Add validation cell testing model on test set (calculate mAP, confusion matrix, per-class accuracy)
-- [ ] T072 [US3] [Dev3] Add Vietnamese label verification cell (ensure predictions use Vietnamese class names from mapping)
-- [ ] T073 [US3] [Dev3] Add sample prediction visualization cell (show test images with bounding boxes + Vietnamese labels + confidence scores)
-- [ ] T074 [US3] [Dev3] Add model comparison cell (base YOLOv11s vs fine-tuned accuracy on test set)
+- [X] T071 [US3] [Dev3] Add validation cell testing model on test set (calculate mAP, confusion matrix, per-class accuracy)
+- [X] T072 [US3] [Dev3] Add Vietnamese label verification cell (ensure predictions use Vietnamese class names from mapping)
+- [X] T073 [US3] [Dev3] Add sample prediction visualization cell (show test images with bounding boxes + Vietnamese labels + confidence scores)
+- [X] T074 [US3] [Dev3] Add model comparison cell (base YOLOv11s vs fine-tuned accuracy on test set)
 
 **Checkpoint US3**: Training notebook complete - run end-to-end and verify model weights exported to `backend/models/`
 
