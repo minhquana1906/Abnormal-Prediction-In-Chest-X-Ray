@@ -38,27 +38,15 @@ with tab1:
         st.error(f"❌ Lỗi tải trang xử lý bộ lọc: {str(e)}")
         st.info("🚧 Vui lòng đảm bảo backend đang chạy và dependencies đã được cài đặt.")
 
-# Tab 2: Disease Detection
+# Tab 2: Disease Detection (T051-T057)
 with tab2:
-    st.header("Phát hiện bệnh lý X-quang ngực")
-    st.markdown(
-        """
-    Tải lên ảnh X-quang ngực để phát hiện các bất thường với công nghệ AI.
-    
-    **Tính năng:**
-    - Phát hiện 14 loại bệnh lý ngực
-    - Hiển thị khung giới hạn với độ tin cậy
-    - Thông tin sức khỏe bằng tiếng Việt
-    - Cảnh báo y tế quan trọng
-    """
-    )
-
-    # Placeholder for detection page
-    st.info("🚧 Giao diện phát hiện bệnh lý sẽ được tích hợp ở đây (Task T051-T057)")
-
-    # Import detection page (will be available after T051-T057)
-    # from frontend.src.pages.detection import render_detection_page
-    # render_detection_page()
+    # Import and render detection page
+    try:
+        from pages.detection import render_detection_page
+        render_detection_page()
+    except Exception as e:
+        st.error(f"❌ Lỗi tải trang phát hiện bệnh lý: {str(e)}")
+        st.info("🚧 Vui lòng đảm bảo backend đang chạy và dependencies đã được cài đặt.")
 
 # Sidebar information
 with st.sidebar:

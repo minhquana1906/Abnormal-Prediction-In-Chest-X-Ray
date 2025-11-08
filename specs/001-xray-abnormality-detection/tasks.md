@@ -140,13 +140,13 @@
 
 ### Frontend UI - Detection Tab (Developer 2)
 
-- [ ] T051 [US2] [Dev2] Implement `frontend/src/pages/detection.py` tab with file uploader component
-- [ ] T052 [US2] [Dev2] Implement detection result display showing annotated image with bounding boxes
-- [ ] T053 [US2] [Dev2] Implement health information cards in `frontend/src/components/health_card.py` (display condition descriptions + warnings in Vietnamese with icons)
-- [ ] T054 [US2] [Dev2] Add "Analyze Image" button with st.spinner() progress indicator
-- [ ] T055 [US2] [Dev2] Add download button for annotated image
-- [ ] T056 [US2] [Dev2] Add "Bình thường" display for healthy images (no bounding boxes, positive message)
-- [ ] T057 [US2] [Dev2] Add Vietnamese error handling UI for detection failures
+- [X] T051 [US2] [Dev2] Implement `frontend/src/pages/detection.py` tab with file uploader component
+- [X] T052 [US2] [Dev2] Implement detection result display showing annotated image with bounding boxes
+- [X] T053 [US2] [Dev2] Implement health information cards in `frontend/src/components/health_card.py` (display condition descriptions + warnings in Vietnamese with icons)
+- [X] T054 [US2] [Dev2] Add "Analyze Image" button with st.spinner() progress indicator
+- [X] T055 [US2] [Dev2] Add download button for annotated image
+- [X] T056 [US2] [Dev2] Add "Bình thường" display for healthy images (no bounding boxes, positive message)
+- [X] T057 [US2] [Dev2] Add Vietnamese error handling UI for detection failures
 
 **Checkpoint US2**: Disease detection feature complete - verify with healthy and abnormal X-ray test images
 

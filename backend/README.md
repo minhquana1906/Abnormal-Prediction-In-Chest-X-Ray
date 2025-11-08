@@ -42,8 +42,7 @@ uv pip install -e ".[backend]"
 
 ```bash
 # From repository root
-cd backend
-uvicorn src.api.main:app --reload --port 8000
+uvicorn backend.src.api.main:app --reload --port 8000
 ```
 
 The API will be available at http://localhost:8000

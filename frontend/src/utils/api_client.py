@@ -165,6 +165,73 @@ def detect_abnormalities(image_id: str) -> Dict[str, Any]:
         raise APIError(f"Không thể kết nối tới máy chủ: {str(e)}")
 
 
+def analyze_image_for_detection(
+    image_id: str, draw_low_confidence: bool = False
+) -> Dict[str, Any]:
+    """
+    Analyze chest X-ray image for abnormality detection with health information.
+
+    This is the main detection endpoint that returns annotated images and health info.
+
+    Args:
+        image_id: ID of uploaded image
+        draw_low_confidence: Whether to draw low confidence detections (<40%)
+
+    Returns:
+        Dictionary with:
+        - success: bool
+        - is_normal: bool (True if no detections)
+        - detections: List of detection dictionaries with:
+            - class_name_en: str
+            - class_name_vi: str
+            - confidence: float (0-1)
+            - confidence_tier: str (high/medium/low)
+            - bbox: [x1, y1, x2, y2]
+            - health_info: dict (Vietnamese description, causes, symptoms, treatment)
+        - annotated_image: str (base64 encoded PNG)
+        - processing_time_ms: int
+
+    Raises:
+        APIError: If detection fails
+    """
+    try:
+        payload = {"image_id": image_id, "draw_low_confidence": draw_low_confidence}
+
+        response = requests.post(
+            f"{API_BASE_URL}/detect/analyze", json=payload, timeout=60
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            return {
+                "success": True,
+                "is_normal": data.get("is_normal", False),
+                "detections": data.get("detections", []),
+                "annotated_image": data.get("annotated_image", ""),
+                "processing_time_ms": data.get("processing_time_ms", 0),
+            }
+        else:
+            # Extract Vietnamese error message from backend
+            error_detail = response.json().get("detail", {})
+            if isinstance(error_detail, dict):
+                message = error_detail.get("message", "Lỗi không xác định")
+            else:
+                message = str(error_detail)
+
+            return {"success": False, "error": message}
+
+    except requests.exceptions.Timeout:
+        return {
+            "success": False,
+            "error": "Quá thời gian phân tích. Vui lòng thử lại.",
+        }
+    except requests.exceptions.RequestException as e:
+        return {
+            "success": False,
+            "error": f"Không thể kết nối tới máy chủ: {str(e)}",
+        }
+
+
 def get_api_info() -> Dict[str, Any]:
     """
     Get API information from root endpoint.
