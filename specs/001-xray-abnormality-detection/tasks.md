@@ -83,16 +83,16 @@
 
 **⚠️ REQUIREMENT**: All filters implemented FROM SCRATCH using NumPy primitives only - NO OpenCV high-level functions
 
-- [ ] T023 [P] [US1] [Dev1] Implement Sobel edge detection in `backend/src/filters/sobel.py` (3x3 Sobel kernels, gradient magnitude calculation using numpy.convolve)
-- [ ] T024 [P] [US1] [Dev1] Implement Canny edge detection in `backend/src/filters/canny.py` (Gaussian smoothing, Sobel gradients, non-maximum suppression, double thresholding 100/200, edge tracking)
-- [ ] T025 [P] [US1] [Dev1] Implement Gaussian blur in `backend/src/filters/gaussian.py` (2D Gaussian kernel generation sigma=1.4, convolution)
-- [ ] T026 [P] [US1] [Dev1] Implement Median filter in `backend/src/filters/median.py` (5x5 sliding window, numpy.median for each window)
-- [ ] T027 [P] [US1] [Dev1] Implement Histogram equalization in `backend/src/filters/histogram.py` (histogram calculation, CDF normalization, intensity mapping)
-- [ ] T028 [P] [US1] [Dev1] Implement Fourier transform visualization in `backend/src/filters/fourier.py` (numpy.fft.fft2, magnitude spectrum, log transform for display)
-- [ ] T029 [P] [US1] [Dev1] Implement Discrete Cosine Transform in `backend/src/filters/dct.py` (numpy.fft-based DCT2, coefficient visualization)
-- [ ] T030 [P] [US1] [Dev1] Implement Otsu thresholding in `backend/src/filters/otsu.py` (inter-class variance calculation, optimal threshold search, binary segmentation)
-- [ ] T031 [US1] [Dev1] Create `backend/src/filters/__init__.py` with filter registry and metadata (display names, descriptions, fixed parameters)
-- [ ] T032 [US1] [Dev1] Add comprehensive logging to all filter implementations (input/output shapes, processing time, parameter values)
+- [X] T023 [P] [US1] [Dev1] Implement Sobel edge detection in `backend/src/filters/sobel.py` (3x3 Sobel kernels, gradient magnitude calculation using numpy.convolve)
+- [X] T024 [P] [US1] [Dev1] Implement Canny edge detection in `backend/src/filters/canny.py` (Gaussian smoothing, Sobel gradients, non-maximum suppression, double thresholding 100/200, edge tracking)
+- [X] T025 [P] [US1] [Dev1] Implement Gaussian blur in `backend/src/filters/gaussian.py` (2D Gaussian kernel generation sigma=1.4, convolution)
+- [X] T026 [P] [US1] [Dev1] Implement Median filter in `backend/src/filters/median.py` (5x5 sliding window, numpy.median for each window)
+- [X] T027 [P] [US1] [Dev1] Implement Histogram equalization in `backend/src/filters/histogram.py` (histogram calculation, CDF normalization, intensity mapping)
+- [X] T028 [P] [US1] [Dev1] Implement Fourier transform visualization in `backend/src/filters/fourier.py` (numpy.fft.fft2, magnitude spectrum, log transform for display)
+- [X] T029 [P] [US1] [Dev1] Implement Discrete Cosine Transform in `backend/src/filters/dct.py` (numpy.fft-based DCT2, coefficient visualization)
+- [X] T030 [P] [US1] [Dev1] Implement Otsu thresholding in `backend/src/filters/otsu.py` (inter-class variance calculation, optimal threshold search, binary segmentation)
+- [X] T031 [US1] [Dev1] Create `backend/src/filters/__init__.py` with filter registry and metadata (display names, descriptions, fixed parameters)
+- [X] T032 [US1] [Dev1] Add comprehensive logging to all filter implementations (input/output shapes, processing time, parameter values)
 
 ### Backend API - Filter Endpoints (Developer 4)
 
