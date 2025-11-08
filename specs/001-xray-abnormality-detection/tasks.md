@@ -126,17 +126,17 @@
 
 ### Backend Implementation - YOLO Inference (Developer 4)
 
-- [ ] T043 [US2] [Dev4] Implement `backend/src/models/yolo_detector.py` YOLO wrapper class (load model from `backend/models/yolov11s_finetuned.pt`, predict method, confidence filtering ≥0.4)
-- [ ] T044 [US2] [Dev4] Implement confidence tier classification in `yolo_detector.py` (>70% high/solid, 40-70% medium/dashed, <40% hidden)
-- [ ] T045 [US2] [Dev4] Implement bounding box drawing in `yolo_detector.py` (draw boxes on numpy array in-memory with solid/dashed styles, Vietnamese labels from class_mapping)
-- [ ] T046 [US2] [Dev4] Add health information lookup in `yolo_detector.py` (map detected classes to Vietnamese descriptions + warnings)
-- [ ] T047 [US2] [Dev4] Add comprehensive logging to YOLO inference (model load time, inference time, detected classes with confidence scores)
+- [X] T043 [US2] [Dev4] Implement `backend/src/models/yolo_detector.py` YOLO wrapper class (load model from `backend/models/yolov11s_finetuned.pt`, predict method, confidence filtering ≥0.4)
+- [X] T044 [US2] [Dev4] Implement confidence tier classification in `yolo_detector.py` (>70% high/solid, 40-70% medium/dashed, <40% hidden)
+- [X] T045 [US2] [Dev4] Implement bounding box drawing in `yolo_detector.py` (draw boxes on numpy array in-memory with solid/dashed styles, Vietnamese labels from class_mapping)
+- [X] T046 [US2] [Dev4] Add health information lookup in `yolo_detector.py` (map detected classes to Vietnamese descriptions + warnings)
+- [X] T047 [US2] [Dev4] Add comprehensive logging to YOLO inference (model load time, inference time, detected classes with confidence scores)
 
 ### Backend API - Detection Endpoints (Developer 4)
 
-- [ ] T048 [US2] [Dev4] Implement `/detect/analyze` endpoint in `backend/src/api/routes/detection.py` (accept image_id, run YOLO inference, return detections + annotated image base64)
-- [ ] T049 [US2] [Dev4] Add "Bình thường" handling for healthy images (is_normal flag when no detections ≥0.4 confidence)
-- [ ] T050 [US2] [Dev4] Add error handling for detection failures with Vietnamese error messages
+- [X] T048 [US2] [Dev4] Implement `/detect/analyze` endpoint in `backend/src/api/routes/detection.py` (accept image_id, run YOLO inference, return detections + annotated image base64)
+- [X] T049 [US2] [Dev4] Add "Bình thường" handling for healthy images (is_normal flag when no detections ≥0.4 confidence)
+- [X] T050 [US2] [Dev4] Add error handling for detection failures with Vietnamese error messages
 
 ### Frontend UI - Detection Tab (Developer 2)
 
