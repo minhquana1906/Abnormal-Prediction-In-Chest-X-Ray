@@ -30,29 +30,13 @@ tab1, tab2 = st.tabs(
 
 # Tab 1: Image Filter Processing
 with tab1:
-    st.header("Xử lý bộ lọc ảnh X-quang")
-    st.markdown(
-        """
-    Tải lên ảnh X-quang ngực và áp dụng các bộ lọc xử lý ảnh để nâng cao khả năng quan sát.
-    
-    **Các bộ lọc khả dụng:**
-    - Phát hiện cạnh Sobel
-    - Phát hiện cạnh Canny
-    - Làm mờ Gaussian
-    - Bộ lọc trung vị
-    - Cân bằng histogram
-    - Biến đổi Fourier
-    - Biến đổi Cosine rời rạc (DCT)
-    - Phân ngưỡng Otsu
-    """
-    )
-
-    # Placeholder for filter processing page
-    st.info("🚧 Giao diện xử lý bộ lọc sẽ được tích hợp ở đây (Task T037-T042)")
-
-    # Import filter processing page (will be available after T037-T042)
-    # from frontend.src.pages.filter_processing import render_filter_processing_page
-    # render_filter_processing_page()
+    # Import and render filter processing page
+    try:
+        from pages.filter_processing import render_filter_processing_page
+        render_filter_processing_page()
+    except Exception as e:
+        st.error(f"❌ Lỗi tải trang xử lý bộ lọc: {str(e)}")
+        st.info("🚧 Vui lòng đảm bảo backend đang chạy và dependencies đã được cài đặt.")
 
 # Tab 2: Disease Detection
 with tab2:
