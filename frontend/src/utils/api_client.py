@@ -49,11 +49,15 @@ def upload_image(image_bytes: bytes, filename: str) -> Dict[str, Any]:
     try:
         files = {"file": (filename, io.BytesIO(image_bytes), "image/jpeg")}
 
-        response = requests.post(f"{API_BASE_URL}/api/upload", files=files, timeout=30)
+        response = requests.post(f"{API_BASE_URL}/upload", files=files, timeout=30)
 
         if response.status_code != 200:
-            error_detail = response.json().get("detail", "Unknown error")
-            raise APIError(f"Tải ảnh thất bại: {error_detail}")
+            error_detail = response.json().get("detail", {})
+            if isinstance(error_detail, dict):
+                message = error_detail.get("message", "Unknown error")
+            else:
+                message = str(error_detail)
+            raise APIError(f"Tải ảnh thất bại: {message}")
 
         return response.json()
 
@@ -72,11 +76,15 @@ def get_available_filters() -> List[Dict[str, str]]:
         APIError: If request fails
     """
     try:
-        response = requests.get(f"{API_BASE_URL}/api/filters/list", timeout=10)
+        response = requests.get(f"{API_BASE_URL}/filter/list", timeout=10)
 
         if response.status_code != 200:
-            error_detail = response.json().get("detail", "Unknown error")
-            raise APIError(f"Không thể lấy danh sách bộ lọc: {error_detail}")
+            error_detail = response.json().get("detail", {})
+            if isinstance(error_detail, dict):
+                message = error_detail.get("message", "Unknown error")
+            else:
+                message = str(error_detail)
+            raise APIError(f"Không thể lấy danh sách bộ lọc: {message}")
 
         return response.json()["filters"]
 
@@ -102,14 +110,18 @@ def apply_filters(image_id: str, filter_names: List[str]) -> Dict[str, Any]:
         payload = {"image_id": image_id, "filters": filter_names}
 
         response = requests.post(
-            f"{API_BASE_URL}/api/filters/apply",
+            f"{API_BASE_URL}/filter/apply",
             json=payload,
             timeout=60,  # Allow up to 60 seconds for filter processing
         )
 
         if response.status_code != 200:
-            error_detail = response.json().get("detail", "Unknown error")
-            raise APIError(f"Xử lý bộ lọc thất bại: {error_detail}")
+            error_detail = response.json().get("detail", {})
+            if isinstance(error_detail, dict):
+                message = error_detail.get("message", "Unknown error")
+            else:
+                message = str(error_detail)
+            raise APIError(f"Xử lý bộ lọc thất bại: {message}")
 
         return response.json()
 
