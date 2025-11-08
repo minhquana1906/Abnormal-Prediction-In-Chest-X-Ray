@@ -1,0 +1,62 @@
+{
+  "Aortic enlargement": {
+    "description": "⚠️ Thông tin về Phình động mạch chủ\n\nPhình động mạch chủ là tình trạng động mạch chủ (mạch máu lớn nhất cơ thể) giãn rộng bất thường. Tình trạng này có thể gây nguy hiểm vì làm giảm khả năng bơm máu hiệu quả của tim.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Vui lòng liên hệ bác sĩ chuyên khoa tim mạch để được khám và tư vấn chi tiết."
+  },
+  "Atelectasis": {
+    "description": "⚠️ Thông tin về Xẹp phổi\n\nXẹp phổi là tình trạng phổi không được bơm đầy không khí, khiến một phần hoặc toàn bộ phổi bị xẹp lại. Có thể do tắc nghẽn đường thở hoặc áp lực từ bên ngoài.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Vui lòng đến bệnh viện ngay để được khám và điều trị kịp thời."
+  },
+  "Calcification": {
+    "description": "⚠️ Thông tin về Vôi hóa\n\nVôi hóa là sự lắng đọng canxi trong mô phổi, thường là dấu hiệu của nhiễm trùng cũ đã lành hoặc tổn thương mô. Trong hầu hết trường hợp, đây là hiện tượng lành tính.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Vui lòng liên hệ bác sĩ để xác định nguyên nhân và đánh giá mức độ nghiêm trọng."
+  },
+  "Cardiomegaly": {
+    "description": "⚠️ Thông tin về Tim to\n\nTim to (Cardiomegaly) là tình trạng tim lớn hơn bình thường, thường do tim phải làm việc quá sức trong thời gian dài. Có thể là dấu hiệu của bệnh tim mạch, cao huyết áp hoặc bệnh van tim.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Cần thăm khám tim mạch ngay để được điều trị và theo dõi."
+  },
+  "Consolidation": {
+    "description": "⚠️ Thông tin về Đông đặc phổi\n\nĐông đặc phổi là tình trạng khoang khí trong phổi bị chất lỏng, mủ hoặc các vật chất khác lấp đầy. Thường gặp trong viêm phổi hoặc nhiễm trùng phổi cấp tính.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Đây có thể là dấu hiệu của nhiễm trùng nghiêm trọng - cần đến bệnh viện ngay."
+  },
+  "ILD": {
+    "description": "⚠️ Thông tin về Tổn thương phổi kẽ\n\nBệnh phổi kẽ (Interstitial Lung Disease - ILD) là nhóm các bệnh lý ảnh hưởng đến mô kẽ của phổi (mô liên kết giữa các túi khí), gây xơ hóa và làm giảm khả năng trao đổi khí.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Cần thăm khám chuyên khoa hô hấp để được chẩn đoán và điều trị phù hợp."
+  },
+  "Infiltration": {
+    "description": "⚠️ Thông tin về Vùng thâm nhiễm\n\nVùng thâm nhiễm là khu vực phổi có sự xâm nhập bất thường của tế bào, dịch hoặc các chất khác vào mô phổi. Có thể là dấu hiệu của nhiễm trùng, viêm hoặc các bệnh lý khác.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Cần khám và xét nghiệm để xác định nguyên nhân chính xác."
+  },
+  "Lung Opacity": {
+    "description": "⚠️ Thông tin về Mờ phổi\n\nMờ phổi là hiện tượng xuất hiện vùng mờ đục trên phim X-quang phổi, cho thấy có sự bất thường trong mô phổi. Có nhiều nguyên nhân khác nhau từ nhiễm trùng đến tràn dịch.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Cần được bác sĩ đánh giá để xác định nguyên nhân cụ thể."
+  },
+  "Nodule-Mass": {
+    "description": "⚠️ Thông tin về Nốt - Khối bất thường\n\nNốt hoặc khối bất thường trong phổi là các vùng tổ chức dày đặc hơn bình thường. Có thể lành tính hoặc ác tính, cần được theo dõi và đánh giá kỹ lưỡng.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Cần thăm khám và có thể cần sinh thiết để xác định tính chất của khối."
+  },
+  "Other lesion": {
+    "description": "⚠️ Thông tin về Tổn thương khác\n\nTổn thương khác là các bất thường trong phổi không thuộc các loại phổ biến đã biết. Cần được bác sĩ chuyên khoa đánh giá chi tiết.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Vui lòng liên hệ bác sĩ để được khám và tư vấn cụ thể."
+  },
+  "Pleural effusion": {
+    "description": "⚠️ Thông tin về Tràn dịch màng phổi\n\nTràn dịch màng phổi là tình trạng tích tụ dịch bất thường trong khoang màng phổi (khoảng giữa lá tạng và lá thành của màng phổi). Có thể do nhiễm trùng, suy tim, ung thư hoặc các nguyên nhân khác.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Cần đến bệnh viện ngay để được chọc hút dịch và xét nghiệm xác định nguyên nhân."
+  },
+  "Pleural thickening": {
+    "description": "⚠️ Thông tin về Dày màng phổi\n\nDày màng phổi là tình trạng màng phổi (lớp màng bao quanh phổi) dày lên bất thường, thường do viêm nhiễm mạn tính, phơi nhiễm amiăng hoặc tổn thương cũ.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Cần khám để xác định nguyên nhân và mức độ ảnh hưởng."
+  },
+  "Pneumothorax": {
+    "description": "⚠️ Thông tin về Tràn khí màng phổi\n\nTràn khí màng phổi là tình trạng không khí tích tụ trong khoang màng phổi, gây xẹp phổi. Đây là tình trạng cấp cứu y khoa cần xử lý ngay lập tức.",
+    "warning": "🚨 KHẨN CẤP: Tràn khí màng phổi là tình trạng nguy hiểm đến tính mạng. VUI LÒNG ĐẾN PHÒNG CẤP CỨU NGAY LẬP TỨC hoặc gọi 115 để được hỗ trợ y tế khẩn cấp."
+  },
+  "Pulmonary fibrosis": {
+    "description": "⚠️ Thông tin về Xơ phổi\n\nXơ phổi là tình trạng mô phổi bị tổn thương và hình thành scar (mô sẹo), làm phổi cứng lại và giảm khả năng trao đổi khí. Đây là tình trạng tiến triển và không hồi phục.",
+    "warning": "🚨 Cảnh báo quan trọng: Thông tin trên chỉ mang tính chất tham khảo và giáo dục. ĐÂY KHÔNG PHẢI LÀ CHẨN ĐOÁN Y KHOA. Xơ phổi là bệnh nghiêm trọng cần điều trị và theo dõi lâu dài - vui lòng gặp bác sĩ chuyên khoa hô hấp."
+  },
+  "Normal": {
+    "description": "✅ Kết quả bình thường\n\nHình ảnh X-quang phổi không phát hiện dấu hiệu bất thường rõ ràng. Đây là kết quả tốt, cho thấy phổi có thể đang trong tình trạng khỏe mạnh.",
+    "warning": "📋 Lưu ý: Kết quả này chỉ dựa trên phân tích hình ảnh tự động và có thể không phát hiện hết tất cả các bất thường. Nếu bạn có triệu chứng hoặc lo ngại về sức khỏe, vui lòng tham khảo ý kiến bác sĩ."
+  }
+}

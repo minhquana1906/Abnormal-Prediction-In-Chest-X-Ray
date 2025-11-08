@@ -26,14 +26,14 @@
 **Purpose**: Project initialization and basic structure  
 **Team**: All developers collaborate
 
-- [ ] T001 [P] [Dev4] Create project structure: `backend/`, `frontend/`, `notebooks/`, `configs/` directories
-- [ ] T002 [P] [Dev1] Initialize backend Python project with uv in `backend/pyproject.toml`
-- [ ] T003 [P] [Dev2] Initialize frontend Python project with uv in `frontend/pyproject.toml`
-- [ ] T004 [P] [Dev3] Create Jupyter notebook structure in `notebooks/`
-- [ ] T005 [P] [Dev4] Create configuration files: `configs/class_mapping.json` and `configs/health_info_vi.json`
-- [ ] T006 [P] [Dev4] Create `.python-version` file with `3.12.3`
-- [ ] T007 [P] [Dev1] Create `backend/models/` directory for YOLO weights storage
-- [ ] T008 [P] [Dev2] Create `frontend/src/` directory structure with `pages/`, `components/`, `utils/` subdirectories
+- [X] T001 [P] [Dev4] Create project structure: `backend/`, `frontend/`, `notebooks/`, `configs/` directories
+- [X] T002 [P] [Dev1] Initialize backend Python project with uv in `backend/pyproject.toml`
+- [X] T003 [P] [Dev2] Initialize frontend Python project with uv in `frontend/pyproject.toml`
+- [X] T004 [P] [Dev3] Create Jupyter notebook structure in `notebooks/`
+- [X] T005 [P] [Dev4] Create configuration files: `configs/class_mapping.json` and `configs/health_info_vi.json`
+- [X] T006 [P] [Dev4] Create `.python-version` file with `3.12.3`
+- [X] T007 [P] [Dev1] Create `backend/models/` directory for YOLO weights storage
+- [X] T008 [P] [Dev2] Create `frontend/src/` directory structure with `pages/`, `components/`, `utils/` subdirectories
 
 **Checkpoint**: Project structure ready - parallel development can begin
 
@@ -46,26 +46,26 @@
 
 ### Backend Foundation (Developer 1 + 4)
 
-- [ ] T009 [P] [Dev1] Create `backend/src/config/settings.py` with configuration constants (max file size 10MB, allowed formats, performance targets)
-- [ ] T010 [P] [Dev1] Create `backend/src/utils/image_utils.py` with image loading and in-memory processing utilities (PIL for I/O, numpy array conversion)
-- [ ] T011 [P] [Dev4] Setup loguru logging in `backend/src/utils/logging_config.py` (file rotation, console output, log levels)
-- [ ] T012 [P] [Dev4] Create `backend/src/api/main.py` FastAPI application entry point with CORS middleware
-- [ ] T013 [Dev4] Create `backend/src/api/middleware/validation.py` with file upload validation (size, format, corruption checks)
-- [ ] T014 [Dev4] Create `backend/src/api/middleware/logging.py` with request/response logging middleware
+- [X] T009 [P] [Dev1] Create `backend/src/config/settings.py` with configuration constants (max file size 10MB, allowed formats, performance targets)
+- [X] T010 [P] [Dev1] Create `backend/src/utils/image_utils.py` with image loading and in-memory processing utilities (PIL for I/O, numpy array conversion)
+- [X] T011 [P] [Dev4] Setup loguru logging in `backend/src/utils/logging_config.py` (file rotation, console output, log levels)
+- [X] T012 [P] [Dev4] Create `backend/src/api/main.py` FastAPI application entry point with CORS middleware
+- [X] T013 [Dev4] Create `backend/src/api/middleware/validation.py` with file upload validation (size, format, corruption checks)
+- [X] T014 [Dev4] Create `backend/src/api/middleware/logging.py` with request/response logging middleware
 
 ### Frontend Foundation (Developer 2)
 
-- [ ] T015 [P] [Dev2] Create `frontend/src/app.py` Streamlit main application with tab structure
-- [ ] T016 [P] [Dev2] Create `frontend/src/utils/api_client.py` for backend HTTP communication
-- [ ] T017 [P] [Dev2] Create `frontend/src/components/image_uploader.py` reusable upload widget with Vietnamese error messages
-- [ ] T018 [Dev2] Create `frontend/src/utils/ui_helpers.py` with Vietnamese message formatting utilities
+- [X] T015 [P] [Dev2] Create `frontend/src/app.py` Streamlit main application with tab structure
+- [X] T016 [P] [Dev2] Create `frontend/src/utils/api_client.py` for backend HTTP communication
+- [X] T017 [P] [Dev2] Create `frontend/src/components/image_uploader.py` reusable upload widget with Vietnamese error messages
+- [X] T018 [Dev2] Create `frontend/src/utils/ui_helpers.py` with Vietnamese message formatting utilities
 
 ### Configuration Foundation (Developer 4)
 
-- [ ] T019 [Dev4] Populate `configs/class_mapping.json` with 14 disease classes + "Bình thường" English-Vietnamese mapping
-- [ ] T020 [Dev4] Populate `configs/health_info_vi.json` with Vietnamese health descriptions and warnings for all 14 classes
-- [ ] T021 [Dev4] Create `backend/src/utils/class_mapping.py` to load and access class mappings
-- [ ] T022 [Dev4] Create `backend/src/utils/health_info.py` to load and access health information
+- [X] T019 [Dev4] Populate `configs/class_mapping.json` with 14 disease classes + "Bình thường" English-Vietnamese mapping
+- [X] T020 [Dev4] Populate `configs/health_info_vi.json` with Vietnamese health descriptions and warnings for all 14 classes
+- [X] T021 [Dev4] Create `backend/src/utils/class_mapping.py` to load and access class mappings
+- [X] T022 [Dev4] Create `backend/src/utils/health_info.py` to load and access health information
 
 **Checkpoint**: Foundation ready - User Story 1 and 2 can now proceed in parallel
 

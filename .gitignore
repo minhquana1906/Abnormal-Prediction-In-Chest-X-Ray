@@ -1,12 +1,41 @@
 # Python-generated files
 __pycache__/
 *.py[oc]
+*.pyc
 build/
 dist/
 wheels/
 *.egg-info
+.venv/
+venv/
 
-# Virtual environments
-.venv
+# Environment and secrets
+.env
+.env.*
+*.log
 
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+
+# Project-specific
 note.md
+
+# Data (training datasets not in repo)
+data/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# WandB artifacts
+wandb/
+
+# Model weights (can be large, download separately)
+backend/models/*.pt
+backend/models/*.onnx

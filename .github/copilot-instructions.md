@@ -12,13 +12,68 @@ Auto-generated from all feature plans. Last updated: 2025-11-08
 ## Project Structure
 
 ```text
-src/
-tests/
+backend/
+  src/
+    api/          # FastAPI endpoints and middleware
+    filters/      # Custom image processing filters (8 filters)
+    models/       # YOLOv11s wrapper
+    utils/        # Image processing, mapping, logging utilities
+    config/       # Configuration constants
+  models/         # Model weights storage (ONLY persistent storage)
+frontend/
+  src/
+    pages/        # Streamlit page modules (filter_processing, detection)
+    components/   # Reusable UI components
+    utils/        # API client and helpers
+notebooks/        # Jupyter notebooks for training
+configs/          # JSON configuration files (class_mapping.json, health_info_vi.json)
+pyproject.toml    # Single dependency file with groups: [backend], [frontend], [training], [dev], [all]
+```
+
+## Dependency Management
+
+This project uses a **single `pyproject.toml`** at the repository root with dependency groups:
+
+- **Core dependencies** (always installed): `pillow`, `numpy`, `loguru`
+- **`[backend]`**: FastAPI, Uvicorn, Ultralytics, Pydantic
+- **`[frontend]`**: Streamlit, Requests  
+- **`[training]`**: Roboflow, WandB, tqdm, Jupyter
+- **`[dev]`**: Ruff (linter/formatter)
+- **`[all]`**: All dependency groups combined
+
+### Installation Commands
+
+```bash
+# Create virtual environment at repository root
+uv venv
+source .venv/bin/activate
+
+# Install specific dependency groups
+uv pip install -e ".[backend]"           # Backend only
+uv pip install -e ".[frontend]"          # Frontend only
+uv pip install -e ".[backend,frontend]"  # Both
+uv pip install -e ".[all]"               # Everything
 ```
 
 ## Commands
 
-cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] pytest [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] ruff check .
+```bash
+# Backend development
+cd backend
+uvicorn src.api.main:app --reload --port 8000
+
+# Frontend development  
+cd frontend
+streamlit run src/app.py --server.port 8501
+
+# Code formatting/linting
+ruff check .
+ruff format .
+
+# Jupyter notebooks
+cd notebooks
+jupyter notebook
+```
 
 ## Code Style
 
