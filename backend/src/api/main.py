@@ -76,14 +76,13 @@ async def health_check():
 
 
 # Import and include routers
-from backend.src.api.routes import filters
+from backend.src.api.routes import filters, detection
 
 app.include_router(filters.router, tags=["Image Filters"])
 logger.info("Registered filters router")
 
-# Detection router will be added in later tasks
-# from backend.src.api.routes import detection
-# app.include_router(detection.router, tags=["Disease Detection"])
+app.include_router(detection.router, tags=["Disease Detection"])
+logger.info("Registered detection router")
 
 
 # Global exception handler
