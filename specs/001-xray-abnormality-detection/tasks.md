@@ -96,10 +96,10 @@
 
 ### Backend API - Filter Endpoints (Developer 4)
 
-- [ ] T033 [US1] [Dev4] Implement `/upload` endpoint in `backend/src/api/routes/filters.py` (multipart file upload, in-memory storage, return image_id and metadata)
-- [ ] T034 [US1] [Dev4] Implement `/filter/list` endpoint in `backend/src/api/routes/filters.py` (return available filters with display names and descriptions)
-- [ ] T035 [US1] [Dev4] Implement `/filter/apply` endpoint in `backend/src/api/routes/filters.py` (accept image_id + filter names, apply filters in-memory, return base64-encoded results with timing)
-- [ ] T036 [US1] [Dev4] Add error handling for filter processing failures with Vietnamese error messages
+- [X] T033 [US1] [Dev4] Implement `/upload` endpoint in `backend/src/api/routes/filters.py` (multipart file upload, in-memory storage, return image_id and metadata)
+- [X] T034 [US1] [Dev4] Implement `/filter/list` endpoint in `backend/src/api/routes/filters.py` (return available filters with display names and descriptions)
+- [X] T035 [US1] [Dev4] Implement `/filter/apply` endpoint in `backend/src/api/routes/filters.py` (accept image_id + filter names, apply filters in-memory, return base64-encoded results with timing)
+- [X] T036 [US1] [Dev4] Add error handling for filter processing failures with Vietnamese error messages
 
 ### Frontend UI - Filter Processing Tab (Developer 2)
 
