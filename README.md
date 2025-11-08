@@ -91,7 +91,7 @@ Offline Jupyter notebook for model fine-tuning:
 
 1. Clone the repository
 ```bash
-git clone <repo-url>
+git clone git@github.com:minhquana1906/Abnormal-Prediction-In-Chest-X-Ray.git
 cd Abnormal-prediction-in-chest-X-ray
 ```
 
@@ -102,7 +102,7 @@ uv venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Option 1: Install all dependencies (backend + frontend + training)
-uv pip install -e ".[all]"
+uv pip install -e ".[all]"  # or uv sync --all-extras
 
 # Option 2: Install only what you need
 uv pip install -e ".[backend]"        # Backend only
@@ -124,14 +124,12 @@ uv pip install -e ".[training]"       # Training notebook dependencies
 
 1. Start the backend API (terminal 1)
 ```bash
-cd backend
-uvicorn src.api.main:app --reload --port 8000
+uvicorn backend.src.api.main:app --reload --port 8000
 ```
 
 2. Start the frontend UI (terminal 2)
 ```bash
-cd frontend
-streamlit run src/app.py --server.port 8501
+streamlit run frontend/src/app.py --server.port 8501
 ```
 
 3. Open http://localhost:8501 in your browser
