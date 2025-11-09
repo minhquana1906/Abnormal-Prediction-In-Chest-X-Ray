@@ -2,6 +2,7 @@
 
 from typing import Dict, Callable, Any
 import numpy as np
+import time
 from loguru import logger
 
 # Import all filter implementations
@@ -169,19 +170,53 @@ def apply_multiple_filters(filter_ids: list, image: np.ndarray) -> Dict[str, np.
         Dictionary mapping filter_id to filtered image
     """
     results = {}
+    filter_timings = {}  # Track individual filter timings
     
     logger.info(f"Applying {len(filter_ids)} filters: {filter_ids}")
     
+    # Start total timing
+    total_start_time = time.time()
+    
     for filter_id in filter_ids:
         try:
+            # Time each filter individually
+            filter_start_time = time.time()
+            
             results[filter_id] = apply_filter(filter_id, image)
+            
+            filter_elapsed_time = time.time() - filter_start_time
+            filter_timings[filter_id] = filter_elapsed_time
+            
+            # Log individual filter completion with timing
+            logger.info(
+                f"Filter '{filter_id}' completed in {filter_elapsed_time*1000:.0f}ms "
+                f"({filter_elapsed_time:.4f}s)"
+            )
+            
         except Exception as e:
             logger.error(f"Filter {filter_id} failed: {str(e)}")
             # Continue with other filters even if one fails
             results[filter_id] = None
+            filter_timings[filter_id] = 0
     
+    # Calculate total time
+    total_elapsed_time = time.time() - total_start_time
+    
+    # Count successful filters
     successful = sum(1 for v in results.values() if v is not None)
-    logger.info(f"Applied {successful}/{len(filter_ids)} filters successfully")
+    
+    # Create timing breakdown for logging
+    timing_breakdown = ", ".join(
+        f"{fid}={filter_timings[fid]*1000:.0f}ms" 
+        for fid in filter_ids if fid in filter_timings
+    )
+    
+    # Log summary with detailed breakdown
+    logger.success(
+        f"Multiple filters completed - {successful}/{len(filter_ids)} successful, "
+        f"Total time: {total_elapsed_time*1000:.0f}ms ({total_elapsed_time:.4f}s)"
+    )
+    logger.info(f"Timing breakdown: {timing_breakdown}")
     
     return results
 
