@@ -1,9 +1,3 @@
-"""
-Detection API endpoints for chest X-ray abnormality detection.
-
-Provides endpoints for running YOLOv11s disease detection on uploaded images.
-"""
-
 import time
 from typing import List, Dict, Any
 
@@ -15,30 +9,24 @@ from backend.src.models.yolo_detector import get_detector
 from backend.src.utils.image_utils import numpy_to_base64
 from backend.src.api.routes.filters import IMAGE_STORAGE
 from backend.src.config.settings import (
-    ERROR_INVALID_IMAGE_ID,
-    ERROR_DETECTION_FAILED,
     PERFORMANCE_TARGET_DETECTION,
 )
 
 
-# Router for detection endpoints
 router = APIRouter(tags=["detection"])
 
 
-# Request/Response models
 class DetectionRequest(BaseModel):
-    """Request model for detection analysis."""
-    
+
     image_id: str = Field(..., description="UUID of uploaded image")
     draw_low_confidence: bool = Field(
         default=False,
-        description="Whether to draw low confidence (<40%) bounding boxes"
+        description="Whether to draw low confidence (<40%) bounding boxes",
     )
 
 
 class BoundingBox(BaseModel):
-    """Bounding box coordinates."""
-    
+
     x1: int
     y1: int
     x2: int
@@ -46,8 +34,7 @@ class BoundingBox(BaseModel):
 
 
 class Detection(BaseModel):
-    """Single detection result."""
-    
+
     class_id: int
     class_name_en: str
     class_name_vi: str
@@ -59,8 +46,7 @@ class Detection(BaseModel):
 
 
 class DetectionResponse(BaseModel):
-    """Response model for detection analysis."""
-    
+
     success: bool
     is_normal: bool = Field(description="True if no abnormalities detected (T049)")
     detections: List[Detection] = Field(default_factory=list)
@@ -70,8 +56,7 @@ class DetectionResponse(BaseModel):
 
 
 class ErrorResponse(BaseModel):
-    """Error response model (T050)."""
-    
+
     success: bool = False
     error: str
     error_code: str
@@ -86,34 +71,9 @@ class ErrorResponse(BaseModel):
     },
 )
 async def analyze_image(request: DetectionRequest):
-    """
-    Analyze chest X-ray image for abnormalities using YOLOv11s (T048).
-    
-    This endpoint performs disease detection on a previously uploaded image
-    and returns detected abnormalities with Vietnamese labels, confidence scores,
-    bounding boxes, and health information.
-    
-    **Confidence Tiers:**
-    - **High (>70%)**: Solid red bounding box - high confidence detection
-    - **Medium (40-70%)**: Dashed orange bounding box - moderate confidence
-    - **Low (<40%)**: Filtered out by default (unless draw_low_confidence=True)
-    
-    **Normal Classification (T049):**
-    - If no detections meet the confidence threshold (≥40%), image is classified as "Normal"
-    
-    Args:
-        request: Detection request with image_id and drawing options
-        
-    Returns:
-        DetectionResponse with annotated image, detections, and health info
-        
-    Raises:
-        HTTPException 400: Invalid or expired image ID (T050)
-        HTTPException 500: Detection processing failed (T050)
-    """
     logger.info(f"[DETECTION] Analyzing image: {request.image_id}")
     start_time = time.time()
-    
+
     try:
         # Retrieve image from storage
         if request.image_id not in IMAGE_STORAGE:
@@ -126,28 +86,25 @@ async def analyze_image(request: DetectionRequest):
                     "error_code": "INVALID_IMAGE_ID",
                 },
             )
-        
-        # Get image data from storage
+
         image_data = IMAGE_STORAGE[request.image_id]
         numpy_image = image_data["image_array"]
         logger.info(
             f"[DETECTION] Retrieved image from storage: "
             f"{image_data['metadata']['width']}x{image_data['metadata']['height']}"
         )
-        
+
         # Get YOLO detector instance
         detector = get_detector()
-        
+
         # Run detection pipeline
         try:
             annotated_image, detections, is_normal = detector.detect_and_annotate(
-                numpy_image,
-                return_enhanced=True
+                numpy_image, return_enhanced=True
             )
         except Exception as detection_error:
             logger.error(f"[DETECTION] Detection failed: {str(detection_error)}")
             logger.exception(detection_error)
-            # T050: Vietnamese error message
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail={
@@ -156,30 +113,30 @@ async def analyze_image(request: DetectionRequest):
                     "error_code": "DETECTION_FAILED",
                 },
             )
-        
+
         # Convert annotated image to base64
         annotated_base64 = numpy_to_base64(annotated_image)
-        
+
         # Calculate processing time
         end_time = time.time()
         processing_time_ms = int((end_time - start_time) * 1000)
-        
+
         # Log performance (T047)
         logger.info(
             f"[DETECTION] Complete - {len(detections)} detections in {processing_time_ms}ms "
             f"(target: {int(PERFORMANCE_TARGET_DETECTION * 1000)}ms)"
         )
-        
+
         if processing_time_ms > PERFORMANCE_TARGET_DETECTION * 1000:
             logger.warning(
                 f"[DETECTION] Performance target exceeded: {processing_time_ms}ms > "
                 f"{int(PERFORMANCE_TARGET_DETECTION * 1000)}ms"
             )
-        
+
         # Build response
         response = DetectionResponse(
             success=True,
-            is_normal=is_normal,  # T049: Normal classification flag
+            is_normal=is_normal,
             detections=[
                 Detection(
                     class_id=det["class_id"],
@@ -197,7 +154,7 @@ async def analyze_image(request: DetectionRequest):
             processing_time_ms=processing_time_ms,
             num_detections=len(detections),
         )
-        
+
         # Log result summary
         if is_normal:
             logger.success(f"[DETECTION] Image classified as NORMAL")
@@ -208,18 +165,16 @@ async def analyze_image(request: DetectionRequest):
                     f"  - {det['class_name_vi']} ({det['class_name_en']}): "
                     f"{det['confidence']:.1%} [{det['confidence_tier']}]"
                 )
-        
+
         return response
-        
+
     except HTTPException:
-        # Re-raise HTTP exceptions
         raise
-        
+
     except Exception as e:
-        # Handle unexpected errors (T050)
         logger.error(f"[DETECTION] Unexpected error: {str(e)}")
         logger.exception(e)
-        
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -232,14 +187,8 @@ async def analyze_image(request: DetectionRequest):
 
 @router.get("/detect/health")
 async def health_check():
-    """
-    Health check endpoint for detection service.
-    
-    Returns:
-        Service status and model loading state
-    """
     detector = get_detector()
-    
+
     return {
         "success": True,
         "service": "detection",

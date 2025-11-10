@@ -1,10 +1,3 @@
-"""
-FastAPI application entry point for Chest X-Ray Abnormality Detection backend.
-
-This module initializes the FastAPI application with CORS middleware,
-routing, and error handling.
-"""
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -17,17 +10,14 @@ from backend.src.config.settings import (
 )
 from backend.src.utils.logging_config import setup_logging, logger
 
-# Initialize logging
 setup_logging()
 
-# Create FastAPI application
 app = FastAPI(
     title="Chest X-Ray Abnormality Detection API",
     description="Backend API for image filter processing and disease detection",
     version="1.0.0",
 )
 
-# Configure CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
@@ -42,19 +32,16 @@ logger.info(f"CORS enabled for origins: {CORS_ORIGINS}")
 
 @app.on_event("startup")
 async def startup_event():
-    """Application startup event handler."""
     logger.info("Application startup complete")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    """Application shutdown event handler."""
     logger.info("Application shutting down")
 
 
 @app.get("/")
 async def root():
-    """Root endpoint."""
     return {
         "message": "Chest X-Ray Abnormality Detection API",
         "version": "1.0.0",
@@ -64,18 +51,11 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    """
-    Health check endpoint.
-
-    Returns:
-        Status and timestamp
-    """
     from datetime import datetime
 
     return {"status": "healthy", "timestamp": datetime.utcnow().isoformat() + "Z"}
 
 
-# Import and include routers
 from backend.src.api.routes import filters, detection
 
 app.include_router(filters.router, tags=["Image Filters"])
@@ -85,19 +65,8 @@ app.include_router(detection.router, tags=["Disease Detection"])
 logger.info("Registered detection router")
 
 
-# Global exception handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
-    """
-    Global exception handler for unhandled errors.
-
-    Args:
-        request: The request that caused the exception
-        exc: The exception that was raised
-
-    Returns:
-        JSON response with error details
-    """
     logger.error(f"Unhandled exception: {str(exc)}")
     logger.exception(exc)
 

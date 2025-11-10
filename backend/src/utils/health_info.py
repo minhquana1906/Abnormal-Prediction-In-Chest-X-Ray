@@ -209,13 +209,9 @@ def get_severity_emoji(class_name: str) -> str:
         class_name: Disease class name (English)
 
     Returns:
-        Emoji string (⚠️, 🚨, ✅, ℹ️)
+        Emoji string (⚠️, 🚨, ℹ️)
     """
     warning = get_warning(class_name)
-
-    # Special cases
-    if class_name == "Normal":
-        return "✅"
 
     # Check warning severity
     if "KHẨN CẤP" in warning:
@@ -255,10 +251,6 @@ def get_recommended_action(class_name: str) -> str:
     # Emergency conditions
     if is_emergency_condition(class_name):
         return "ĐẾN PHÒNG CẤP CỨU NGAY hoặc gọi 115"
-
-    # Normal condition
-    if class_name == "Normal":
-        return "Tiếp tục duy trì lối sống khỏe mạnh"
 
     # Other conditions - extract action from warning
     if "đến bệnh viện ngay" in warning.lower():

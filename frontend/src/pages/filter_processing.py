@@ -22,6 +22,7 @@ from utils.api_client import (
     format_api_error,
     check_backend_health,
 )
+from utils.image_display import display_xray_image, format_image_info
 from components.image_uploader import render_image_uploader
 from components.filter_selector import (
     render_filter_selector,
@@ -75,12 +76,6 @@ def check_backend_connection():
             st.error(
                 """
             ❌ **Không thể kết nối tới máy chủ backend!**
-            
-            Vui lòng đảm bảo máy chủ backend đang chạy:
-            ```bash
-            cd "d:\\Semester_1_2024_2025\\Image processing\\Abnormal-Prediction-In-Chest-X-Ray"
-            uvicorn backend.src.api.main:app --reload --port 8000
-            ```
             """
             )
             st.stop()
@@ -110,7 +105,7 @@ def handle_image_upload(uploaded_file):
         st.session_state.uploaded_filename = uploaded_file.name
         st.session_state.filter_results = None  # Reset previous results
 
-        st.success(f"✅ Tải ảnh thành công! ID: `{response['image_id']}`")
+        # st.success(f"✅ Tải ảnh thành công! ID: `{response['image_id']}`")
         st.info(
             f"📊 Kích thước: {response['width']} x {response['height']} pixels | "
             f"Dung lượng: {response['size_bytes'] / 1024:.1f} KB"
@@ -148,7 +143,7 @@ def handle_filter_application(image_id: str, selected_filters: list):
 
 
 def render_filter_processing_page():
-    """Render the main filter processing page."""
+    """Render the main filter processing page with single-page layout."""
     # Initialize session state
     initialize_session_state()
 
@@ -158,120 +153,130 @@ def render_filter_processing_page():
     # Check backend connection
     check_backend_connection()
 
-    # Create tabs for better organization
-    tab1, tab2, tab3 = st.tabs(["📤 Tải Ảnh", "🎛️ Chọn Bộ Lọc", "✨ Kết Quả"])
+    # ============================================================
+    # SECTION 1: UPLOAD IMAGE
+    # ============================================================
+    st.header("📤 1. Tải Ảnh X-Quang")
 
-    with tab1:
-        st.header("📤 Tải Ảnh X-Quang")
+    # File uploader
+    uploaded_file = st.file_uploader(
+        "Chọn ảnh X-quang ngực (PNG, JPG, JPEG)",
+        type=["png", "jpg", "jpeg"],
+        accept_multiple_files=False,
+        help="Tải lên ảnh X-quang ngực để xử lý. Kích thước tối đa: 10MB",
+        key="filter_uploader",
+    )
 
-        # File uploader
-        uploaded_file = st.file_uploader(
-            "Chọn ảnh X-quang ngực (PNG, JPG, JPEG)",
-            type=["png", "jpg", "jpeg"],
-            accept_multiple_files=False,
-            help="Tải lên ảnh X-quang ngực để xử lý. Kích thước tối đa: 10MB",
-        )
+    if uploaded_file is not None:
+        # Check if this is a new upload
+        if st.session_state.uploaded_filename != uploaded_file.name:
+            handle_image_upload(uploaded_file)
 
-        if uploaded_file is not None:
-            # Check if this is a new upload
-            if st.session_state.uploaded_filename != uploaded_file.name:
-                handle_image_upload(uploaded_file)
+        # Display uploaded image with size constraint
+        if st.session_state.uploaded_image is not None:
+            st.markdown("#### Ảnh đã tải lên:")
+            display_xray_image(
+                st.session_state.uploaded_image,
+                f"📷 {st.session_state.uploaded_filename}",
+                max_width=600,
+            )
+            st.info(f"ℹ️ {format_image_info(st.session_state.uploaded_image)}")
+    else:
+        st.info("ℹ️ Vui lòng tải lên ảnh X-quang để tiếp tục")
 
-            # Display uploaded image
-            if st.session_state.uploaded_image is not None:
-                st.markdown("---")
-                render_original_image(
-                    st.session_state.uploaded_image, st.session_state.uploaded_filename
-                )
-        else:
-            st.info("ℹ️ Vui lòng tải lên ảnh X-quang để tiếp tục")
+    st.markdown("---")
 
-    with tab2:
-        st.header("🎛️ Chọn Bộ Lọc Xử Lý")
+    # ============================================================
+    # SECTION 2: SELECT FILTERS
+    # ============================================================
+    st.header("🎛️ 2. Chọn Bộ Lọc Xử Lý")
 
-        if st.session_state.image_id is None:
-            st.warning("⚠️ Vui lòng tải ảnh lên trước khi chọn bộ lọc (Tab 'Tải Ảnh')")
-        else:
-            try:
-                # Get available filters
-                with st.spinner("🔍 Đang tải danh sách bộ lọc..."):
-                    filters = get_available_filters()
+    if st.session_state.image_id is None:
+        st.warning("⚠️ Vui lòng tải ảnh lên trước khi chọn bộ lọc (Phần 1 phía trên)")
+    else:
+        try:
+            # Get available filters
+            with st.spinner("🔍 Đang tải danh sách bộ lọc..."):
+                filters = get_available_filters()
 
-                # Quick select buttons
-                render_quick_select(filters)
+            # Quick select buttons
+            render_quick_select(filters)
 
-                st.markdown("---")
+            st.markdown("#### Chọn bộ lọc:")
 
-                # Filter selector
-                selected_filters = render_filter_selector(filters)
+            # Filter selector
+            selected_filters = render_filter_selector(filters)
 
-                st.markdown("---")
+            st.markdown("---")
 
-                # Apply filters button
-                if selected_filters:
-                    if st.button(
-                        f"✨ Áp Dụng {len(selected_filters)} Bộ Lọc",
-                        type="primary",
-                        width="stretch",
-                        key="apply_filters_btn",
-                    ):
-                        handle_filter_application(
-                            st.session_state.image_id, selected_filters
-                        )
-                else:
-                    st.button(
-                        "✨ Áp Dụng Bộ Lọc",
-                        type="primary",
-                        width="stretch",
-                        disabled=True,
-                        help="Vui lòng chọn ít nhất một bộ lọc",
+            # Apply filters button
+            if selected_filters:
+                if st.button(
+                    f"✨ Áp Dụng {len(selected_filters)} Bộ Lọc",
+                    type="primary",
+                    use_container_width=True,
+                    key="apply_filters_btn",
+                ):
+                    handle_filter_application(
+                        st.session_state.image_id, selected_filters
                     )
+            else:
+                st.button(
+                    "✨ Áp Dụng Bộ Lọc",
+                    type="primary",
+                    use_container_width=True,
+                    disabled=True,
+                    help="Vui lòng chọn ít nhất một bộ lọc",
+                )
 
-                st.markdown("---")
+            st.markdown("---")
 
-                # Filter information panel
+            # Filter information panel
+            with st.expander("📚 Thông tin về các bộ lọc", expanded=False):
                 render_filter_info_panel(filters)
 
-            except APIError as e:
-                st.error(format_api_error(e))
-            except Exception as e:
-                st.error(f"❌ Lỗi không xác định: {str(e)}")
+        except APIError as e:
+            st.error(format_api_error(e))
+        except Exception as e:
+            st.error(f"❌ Lỗi không xác định: {str(e)}")
 
-    with tab3:
-        st.header("✨ Kết Quả Xử Lý")
+    st.markdown("---")
 
-        if st.session_state.filter_results is None:
-            st.info(
-                "ℹ️ Chưa có kết quả. Vui lòng chọn và áp dụng bộ lọc ở Tab 'Chọn Bộ Lọc'"
-            )
-        else:
-            results = st.session_state.filter_results["results"]
-            total_time_ms = st.session_state.filter_results["total_time_ms"]
+    # ============================================================
+    # SECTION 3: RESULTS
+    # ============================================================
+    st.header("✨ 3. Kết Quả Xử Lý")
 
-            # Display results
-            render_processed_results(results, total_time_ms)
+    if st.session_state.filter_results is None:
+        st.info("ℹ️ Chưa có kết quả. Vui lòng chọn và áp dụng bộ lọc ở Phần 2 phía trên")
+    else:
+        results = st.session_state.filter_results["results"]
+        total_time_ms = st.session_state.filter_results["total_time_ms"]
 
-            st.markdown("---")
+        # Display results
+        render_processed_results(results, total_time_ms)
 
-            # Performance summary
-            render_performance_summary(results, total_time_ms)
+        st.markdown("---")
 
-            st.markdown("---")
+        # # Performance summary
+        # render_performance_summary(results, total_time_ms)
 
-            # Download all button
-            if len(results) > 1:
-                render_download_all_button(results, st.session_state.uploaded_filename)
+        # st.markdown("---")
 
-            # Reset button
-            st.markdown("---")
-            if st.button("🔄 Xử Lý Ảnh Mới", width="stretch"):
-                # Clear session state
-                st.session_state.uploaded_image = None
-                st.session_state.image_id = None
-                st.session_state.uploaded_filename = None
-                st.session_state.filter_results = None
-                st.session_state.selected_filters = []
-                st.rerun()
+        # Download all button
+        if len(results) > 1:
+            render_download_all_button(results, st.session_state.uploaded_filename)
+
+        # Reset button
+        st.markdown("---")
+        if st.button("🔄 Xử Lý Ảnh Mới", use_container_width=True):
+            # Clear session state
+            st.session_state.uploaded_image = None
+            st.session_state.image_id = None
+            st.session_state.uploaded_filename = None
+            st.session_state.filter_results = None
+            st.session_state.selected_filters = []
+            st.rerun()
 
 
 # Main entry point

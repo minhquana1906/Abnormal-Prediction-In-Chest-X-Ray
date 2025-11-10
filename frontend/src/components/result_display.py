@@ -68,14 +68,13 @@ def render_processed_results(results: List[Dict[str, Any]], total_time_ms: int):
         results: List of processed image results from API
         total_time_ms: Total processing time in milliseconds
     """
-    st.subheader(f"✨ Kết Quả Xử Lý ({len(results)} bộ lọc)")
 
-    # Display total processing time
-    st.metric(
-        label="⏱️ Tổng Thời Gian Xử Lý",
-        value=f"{total_time_ms} ms",
-        delta=f"{total_time_ms / 1000:.2f}s",
-    )
+    # # Display total processing time
+    # st.metric(
+    #     label="⏱️ Tổng Thời Gian Xử Lý",
+    #     value=f"{total_time_ms} ms",
+    #     delta=f"{total_time_ms / 1000:.2f}s",
+    # )
 
     # Display results in a grid (2 columns)
     for idx in range(0, len(results), 2):
@@ -174,7 +173,6 @@ def render_download_all_button(results: List[Dict[str, Any]], original_filename:
     import zipfile
     from io import BytesIO
 
-    st.markdown("---")
     st.markdown("### 📦 Tải Xuống Tất Cả")
 
     if st.button("📥 Tải xuống tất cả ảnh đã xử lý (ZIP)", width="stretch"):

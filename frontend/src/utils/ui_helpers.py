@@ -158,10 +158,10 @@ def display_image_comparison(
     col1, col2 = st.columns(2)
 
     with col1:
-        st.image(image1, caption=caption1, use_column_width=True)
+        st.image(image1, caption=caption1, width="stretch")
 
     with col2:
-        st.image(image2, caption=caption2, use_column_width=True)
+        st.image(image2, caption=caption2, width="stretch")
 
 
 def display_image_grid(
@@ -186,7 +186,7 @@ def display_image_grid(
                     st.image(
                         images[img_idx],
                         caption=captions[img_idx],
-                        use_column_width=True,
+                        width="stretch",
                     )
 
 

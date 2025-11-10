@@ -136,22 +136,9 @@ def get_class_list_vietnamese() -> List[str]:
     return list(mapping.values())
 
 
-def is_normal_class(class_name: str) -> bool:
-    """
-    Check if a class name represents "Normal" (healthy) condition.
-
-    Args:
-        class_name: Class name in English or Vietnamese
-
-    Returns:
-        True if class represents normal/healthy condition
-    """
-    return class_name in ["Normal", "Bình thường"]
-
-
 def get_class_count() -> int:
     """
-    Get total number of disease classes (including "Normal").
+    Get total number of disease classes (abnormality classes only).
 
     Returns:
         Number of classes

@@ -106,7 +106,9 @@ def render_image_uploader(
 
 
 def display_image_with_caption(
-    image: Image.Image, caption: str = "Ảnh X-quang ngực", use_column_width: bool = True
+    image: Image.Image,
+    caption: str = "Ảnh X-quang ngực",
+    width: str = "stretch",
 ):
     """
     Display an image with Vietnamese caption.
@@ -114,9 +116,9 @@ def display_image_with_caption(
     Args:
         image: PIL Image to display
         caption: Caption text in Vietnamese
-        use_column_width: Whether to use full column width
+        width: Width of the image container
     """
-    st.image(image, caption=caption, use_column_width=use_column_width)
+    st.image(image, caption=caption, width=width)
 
 
 def display_image_info(image: Image.Image) -> None:

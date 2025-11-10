@@ -1,10 +1,3 @@
-"""
-File upload validation middleware.
-
-This module provides validation functions for uploaded files including
-size, format, and corruption checks.
-"""
-
 from typing import Optional
 from fastapi import UploadFile, HTTPException, status
 from PIL import Image
@@ -25,24 +18,6 @@ from backend.src.utils.image_utils import (
 
 
 async def validate_uploaded_file(file: UploadFile) -> bytes:
-    """
-    Validate uploaded file meets all requirements.
-
-    Checks:
-    - File size does not exceed maximum limit
-    - File format is in allowed list
-    - File is not corrupted and can be opened
-    - Image dimensions are within acceptable range
-
-    Args:
-        file: FastAPI UploadFile object
-
-    Returns:
-        File content as bytes
-
-    Raises:
-        HTTPException: If validation fails
-    """
     # Read file content
     content = await file.read()
     file_size = len(content)
@@ -98,16 +73,6 @@ async def validate_uploaded_file(file: UploadFile) -> bytes:
 
 
 def validate_filter_name(filter_name: str, available_filters: list) -> None:
-    """
-    Validate filter name is in available filters list.
-
-    Args:
-        filter_name: Name of filter to validate
-        available_filters: List of available filter names
-
-    Raises:
-        HTTPException: If filter name is invalid
-    """
     if filter_name not in available_filters:
         log_validation_error("filter_name", f"Unknown filter: {filter_name}")
         raise HTTPException(
@@ -117,16 +82,6 @@ def validate_filter_name(filter_name: str, available_filters: list) -> None:
 
 
 def validate_filter_list(filter_names: list, available_filters: list) -> None:
-    """
-    Validate list of filter names.
-
-    Args:
-        filter_names: List of filter names to validate
-        available_filters: List of available filter names
-
-    Raises:
-        HTTPException: If any filter name is invalid or list is empty
-    """
     if not filter_names:
         log_validation_error("filter_list", "Empty filter list")
         raise HTTPException(
@@ -139,16 +94,6 @@ def validate_filter_list(filter_names: list, available_filters: list) -> None:
 
 
 def validate_image_id(image_id: str, stored_images: dict) -> None:
-    """
-    Validate image ID exists in storage.
-
-    Args:
-        image_id: Image identifier to validate
-        stored_images: Dictionary of stored images
-
-    Raises:
-        HTTPException: If image ID is invalid or not found
-    """
     if not image_id:
         log_validation_error("image_id", "Empty image ID")
         raise HTTPException(
@@ -164,15 +109,6 @@ def validate_image_id(image_id: str, stored_images: dict) -> None:
 
 
 def validate_confidence_threshold(threshold: float) -> None:
-    """
-    Validate confidence threshold is in valid range [0.0, 1.0].
-
-    Args:
-        threshold: Confidence threshold value
-
-    Raises:
-        HTTPException: If threshold is out of range
-    """
     if not (0.0 <= threshold <= 1.0):
         log_validation_error("confidence_threshold", f"Invalid threshold: {threshold}")
         raise HTTPException(
