@@ -54,3 +54,8 @@ indent-style = "space"
 
 [tool.hatch.build.targets.wheel]
 packages = ["abnormal_prediction_in_chest_x_ray"]
+
+[dependency-groups]
+training = [
+    "seaborn>=0.13.2",
+]

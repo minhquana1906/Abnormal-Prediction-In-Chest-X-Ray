@@ -37,5 +37,12 @@ data/
 wandb/
 
 # Model weights (can be large, download separately)
-backend/models/*.pt
-backend/models/*.onnx
+# models/*.pt
+# models/*.onnx
+artifacts/
+
+data/
+specs/
+.specify/
+.vscode/
+.github/

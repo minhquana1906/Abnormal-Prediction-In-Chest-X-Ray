@@ -58,13 +58,6 @@ def render_page_header():
     st.markdown(
         """
     Tải lên ảnh X-quang ngực và áp dụng các bộ lọc xử lý ảnh để tăng cường hình ảnh.
-    
-    **Tính năng:**
-    - ✅ Hỗ trợ 8 bộ lọc xử lý ảnh chuyên nghiệp
-    - ✅ Xử lý nhiều bộ lọc cùng lúc
-    - ✅ So sánh ảnh gốc và ảnh đã xử lý
-    - ✅ Tải xuống kết quả đã xử lý
-    - ✅ Thống kê hiệu suất xử lý
     """
     )
 
@@ -178,7 +171,7 @@ def render_filter_processing_page():
             display_xray_image(
                 st.session_state.uploaded_image,
                 f"📷 {st.session_state.uploaded_filename}",
-                max_width=600,
+                max_width=300,
             )
             st.info(f"ℹ️ {format_image_info(st.session_state.uploaded_image)}")
     else:
@@ -214,7 +207,7 @@ def render_filter_processing_page():
                 if st.button(
                     f"✨ Áp Dụng {len(selected_filters)} Bộ Lọc",
                     type="primary",
-                    use_container_width=True,
+                    width="stretch",
                     key="apply_filters_btn",
                 ):
                     handle_filter_application(
@@ -224,7 +217,7 @@ def render_filter_processing_page():
                 st.button(
                     "✨ Áp Dụng Bộ Lọc",
                     type="primary",
-                    use_container_width=True,
+                    width="stretch",
                     disabled=True,
                     help="Vui lòng chọn ít nhất một bộ lọc",
                 )
@@ -269,7 +262,7 @@ def render_filter_processing_page():
 
         # Reset button
         st.markdown("---")
-        if st.button("🔄 Xử Lý Ảnh Mới", use_container_width=True):
+        if st.button("🔄 Xử Lý Ảnh Mới", width="stretch"):
             # Clear session state
             st.session_state.uploaded_image = None
             st.session_state.image_id = None

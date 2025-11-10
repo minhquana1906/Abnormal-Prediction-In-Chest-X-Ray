@@ -1,12 +1,3 @@
-"""
-Image display utilities for consistent image rendering across the application.
-
-Provides functions to display images with:
-- Consistent sizing (9:16 aspect ratio for X-rays)
-- Responsive design (adapts to screen size)
-- Proper captions
-"""
-
 import streamlit as st
 from PIL import Image
 import numpy as np
@@ -16,34 +7,15 @@ from typing import Optional, Union
 def display_xray_image(
     image: Union[Image.Image, np.ndarray],
     caption: str = "",
-    use_column_width: bool = False,
+    width: str = "content",
     max_width: int = 600,
 ) -> None:
-    """
-    Display X-ray image with consistent sizing and aspect ratio.
-
-    Images are displayed with:
-    - Max width: 600px (suitable for small screens)
-    - Aspect ratio preserved (9:16 portrait orientation)
-    - Centered alignment
-    - Clear caption
-
-    Args:
-        image: PIL Image or numpy array
-        caption: Image caption text
-        use_column_width: If True, use full column width (overrides max_width)
-        max_width: Maximum width in pixels (default: 600px)
-
-    Example:
-        >>> img = Image.open("xray.jpg")
-        >>> display_xray_image(img, "Ảnh X-quang gốc")
-    """
     # Convert numpy array to PIL if needed
     if isinstance(image, np.ndarray):
         image = Image.fromarray(image)
 
     # Use custom CSS for image sizing
-    if not use_column_width:
+    if not width == "content":
         # Apply max-width constraint with CSS
         st.markdown(
             f"""
@@ -62,7 +34,7 @@ def display_xray_image(
         )
 
     # Display image
-    st.image(image, caption=caption, use_column_width=use_column_width)
+    st.image(image, caption=caption, width=width)
 
 
 def display_xray_comparison(

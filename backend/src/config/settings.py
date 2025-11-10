@@ -11,12 +11,12 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 
 # Model paths
-MODEL_DIR = PROJECT_ROOT / "backend" / "models"
-MODEL_WEIGHTS_PATH = MODEL_DIR / "yolov11s_finetuned.pt"
+MODEL_DIR = PROJECT_ROOT / "models"
+MODEL_WEIGHTS_PATH = MODEL_DIR / "best.pt"
 
 # Configuration file paths
 CONFIG_DIR = PROJECT_ROOT / "configs"
-CLASS_MAPPING_PATH = CONFIG_DIR / "class_mapping.json"
+CLASS_MAPPING_PATH = CONFIG_DIR / "class_mapping_2classes.json"
 HEALTH_INFO_PATH = CONFIG_DIR / "health_info_vi.json"
 
 # File upload constraints

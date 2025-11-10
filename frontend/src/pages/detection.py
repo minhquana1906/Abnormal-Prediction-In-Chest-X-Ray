@@ -1,10 +1,3 @@
-"""
-Detection page for chest X-ray abnormality detection.
-
-Allows users to upload X-ray images and get disease detection results
-with bounding boxes, Vietnamese labels, and health information.
-"""
-
 import streamlit as st
 import base64
 from io import BytesIO
@@ -29,19 +22,11 @@ from utils.image_display import display_xray_image, format_image_info
 
 
 def render_detection_page():
-    """
-    Render the disease detection page with upload, analysis, and results.
-    """
     st.title("🔬 Phát hiện bệnh từ X-quang phổi")
 
     st.markdown(
         """
         Tải lên ảnh X-quang phổi để phát hiện các bất thường với công nghệ AI.
-        
-        **Hỗ trợ:**
-        - Định dạng: PNG, JPG, JPEG
-        - Kích thước tối đa: 10MB
-        - 14 loại bệnh phổ biến
         """
     )
 

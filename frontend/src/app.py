@@ -28,7 +28,7 @@ with st.sidebar:
     if st.button(
         "🎨 Xử lý bộ lọc ảnh",
         type="primary" if st.session_state.current_page == "filters" else "secondary",
-        use_container_width=True,
+        width="stretch",
     ):
         st.session_state.current_page = "filters"
         st.rerun()
@@ -36,7 +36,7 @@ with st.sidebar:
     if st.button(
         "🔍 Phát hiện bệnh lý",
         type="primary" if st.session_state.current_page == "detection" else "secondary",
-        use_container_width=True,
+        width="stretch",
     ):
         st.session_state.current_page = "detection"
         st.rerun()

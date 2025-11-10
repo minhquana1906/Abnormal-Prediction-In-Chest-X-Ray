@@ -10,16 +10,7 @@ from typing import List, Dict, Any
 
 
 def render_filter_selector(filters: List[Dict[str, Any]]) -> List[str]:
-    """
-    Render a multi-select filter selector component.
-
-    Args:
-        filters: List of filter dictionaries with metadata
-
-    Returns:
-        List of selected filter IDs
-    """
-    st.subheader("🎛️ Chọn Bộ Lọc")
+    st.subheader("👉️ Chọn Bộ Lọc")
 
     st.markdown(
         """
