@@ -1,10 +1,3 @@
-"""
-Result display component for showing original and processed images.
-
-This component displays the original image alongside filtered results
-in a side-by-side comparison layout with processing time information.
-"""
-
 import streamlit as st
 import base64
 from io import BytesIO
@@ -13,42 +6,17 @@ from typing import List, Dict, Any, Optional
 
 
 def decode_base64_image(base64_string: str) -> Image.Image:
-    """
-    Decode a base64 encoded image string to PIL Image.
-
-    Args:
-        base64_string: Base64 encoded image string
-
-    Returns:
-        PIL Image object
-    """
     image_bytes = base64.b64decode(base64_string)
     return Image.open(BytesIO(image_bytes))
 
 
 def create_download_link(base64_string: str, filename: str) -> str:
-    """
-    Create a download link for a base64 encoded image.
-
-    Args:
-        base64_string: Base64 encoded image string
-        filename: Download filename
-
-    Returns:
-        HTML download link
-    """
     href = f"data:image/png;base64,{base64_string}"
     return f'<a href="{href}" download="{filename}">📥 Tải xuống {filename}</a>'
 
 
 def render_original_image(image: Image.Image, filename: str):
-    """
-    Render the original uploaded image.
 
-    Args:
-        image: PIL Image object
-        filename: Original filename
-    """
     st.subheader("📷 Ảnh Gốc")
 
     # Display image info
@@ -61,22 +29,6 @@ def render_original_image(image: Image.Image, filename: str):
 
 
 def render_processed_results(results: List[Dict[str, Any]], total_time_ms: int):
-    """
-    Render processed filter results in a grid layout.
-
-    Args:
-        results: List of processed image results from API
-        total_time_ms: Total processing time in milliseconds
-    """
-
-    # # Display total processing time
-    # st.metric(
-    #     label="⏱️ Tổng Thời Gian Xử Lý",
-    #     value=f"{total_time_ms} ms",
-    #     delta=f"{total_time_ms / 1000:.2f}s",
-    # )
-
-    # Display results in a grid (2 columns)
     for idx in range(0, len(results), 2):
         cols = st.columns(2)
 
@@ -91,13 +43,6 @@ def render_processed_results(results: List[Dict[str, Any]], total_time_ms: int):
 
 
 def render_single_result(result: Dict[str, Any], result_number: int):
-    """
-    Render a single processed result.
-
-    Args:
-        result: Single result dictionary with filter info
-        result_number: Display number for the result
-    """
     filter_name = result["filter_name"]
     display_name = result["display_name"]
     image_base64 = result["image_base64"]
@@ -114,10 +59,10 @@ def render_single_result(result: Dict[str, Any], result_number: int):
         # Decode and display image
         try:
             processed_image = decode_base64_image(image_base64)
-            
+
             # Display thumbnail
             st.image(processed_image, use_container_width=True)
-            
+
             # Fullscreen view
             with st.expander("🔍 Xem ảnh toàn màn hình", expanded=False):
                 st.markdown(
@@ -142,10 +87,12 @@ def render_single_result(result: Dict[str, Any], result_number: int):
                     """,
                     unsafe_allow_html=True,
                 )
-                
-                st.markdown('<div class="fullscreen-filter-image">', unsafe_allow_html=True)
+
+                st.markdown(
+                    '<div class="fullscreen-filter-image">', unsafe_allow_html=True
+                )
                 st.image(processed_image, use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+                st.markdown("</div>", unsafe_allow_html=True)
 
             # Download button
             download_filename = f"{filter_name}_processed.png"
@@ -168,15 +115,6 @@ def render_side_by_side_comparison(
     filter_name: str,
     processing_time_ms: int,
 ):
-    """
-    Render original and processed images side-by-side for comparison.
-
-    Args:
-        original_image: Original PIL Image
-        processed_image: Processed PIL Image
-        filter_name: Name of the filter applied
-        processing_time_ms: Processing time in milliseconds
-    """
     st.subheader(f"🔍 So Sánh: {filter_name}")
     st.caption(
         f"⏱️ Thời gian xử lý: {processing_time_ms} ms ({processing_time_ms / 1000:.3f}s)"
@@ -194,13 +132,6 @@ def render_side_by_side_comparison(
 
 
 def render_download_all_button(results: List[Dict[str, Any]], original_filename: str):
-    """
-    Render a button to download all processed images as a ZIP file.
-
-    Args:
-        results: List of processed results
-        original_filename: Original filename for naming the ZIP
-    """
     import zipfile
     from io import BytesIO
 
@@ -236,13 +167,6 @@ def render_download_all_button(results: List[Dict[str, Any]], original_filename:
 
 
 def render_performance_summary(results: List[Dict[str, Any]], total_time_ms: int):
-    """
-    Render performance summary with timing breakdown.
-
-    Args:
-        results: List of processed results
-        total_time_ms: Total processing time in milliseconds
-    """
     with st.expander("📊 Thống Kê Hiệu Suất", expanded=False):
         st.markdown("### Phân Tích Thời Gian Xử Lý")
 

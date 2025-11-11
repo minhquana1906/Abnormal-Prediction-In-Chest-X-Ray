@@ -3,12 +3,7 @@ from typing import Dict, List
 
 
 def render_health_card(detection: Dict) -> None:
-    """
-    Render a health information card for a single detection.
 
-    Args:
-        detection: Detection dictionary containing class names, confidence, and health info
-    """
     class_name_vi = detection.get("class_name_vi", "")
     class_name_en = detection.get("class_name_en", "")
     confidence = detection.get("confidence", 0.0)
@@ -16,7 +11,6 @@ def render_health_card(detection: Dict) -> None:
     health_description = detection.get("health_description", "")
     health_warning = detection.get("health_warning", "")
 
-    # Color coding by confidence tier
     tier_colors = {
         "high": "#ff4444",  # Red for high confidence
         "medium": "#ffa500",  # Orange for medium confidence
@@ -70,12 +64,6 @@ def render_health_card(detection: Dict) -> None:
 
 
 def render_health_cards(detections: List[Dict]) -> None:
-    """
-    Render health information cards for all detections.
-
-    Args:
-        detections: List of detection dictionaries
-    """
     if not detections:
         st.info("ℹ️ Không có thông tin sức khỏe để hiển thị.")
         return
@@ -96,13 +84,6 @@ def render_health_cards(detections: List[Dict]) -> None:
 
 
 def render_detection_summary(detections: List[Dict], is_normal: bool) -> None:
-    """
-    Render a summary of detection results.
-
-    Args:
-        detections: List of detection dictionaries
-        is_normal: Whether image is classified as normal
-    """
     if is_normal:
         st.success(
             """

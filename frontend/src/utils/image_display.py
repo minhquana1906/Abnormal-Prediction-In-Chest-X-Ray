@@ -15,7 +15,7 @@ def display_xray_image(
 ) -> None:
     """
     Display X-ray image with centered alignment and optional fullscreen feature.
-    
+
     Args:
         image: PIL Image or numpy array
         caption: Caption text for the image
@@ -52,8 +52,8 @@ def display_xray_image(
     )
 
     # Display image
-    st.image(image, caption=caption, width='content')
-    
+    st.image(image, caption=caption, width="content")
+
     # Add fullscreen button
     if enable_fullscreen:
         expander_key = f"fullscreen_{hash(caption)}"
@@ -82,8 +82,8 @@ def display_xray_image(
             )
             # Display full-size image
             st.markdown('<div class="fullscreen-image">', unsafe_allow_html=True)
-            st.image(image, width='stretch')
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.image(image, width="stretch")
+            st.markdown("</div>", unsafe_allow_html=True)
             # Download button in fullscreen view
             buffer = BytesIO()
             image.save(buffer, format="PNG")
@@ -93,7 +93,7 @@ def display_xray_image(
                 data=img_bytes,
                 file_name=f"xray_image.png",
                 mime="image/png",
-                width='stretch',
+                width="stretch",
             )
 
 

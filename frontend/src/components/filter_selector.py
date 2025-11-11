@@ -1,10 +1,3 @@
-"""
-Filter selector component for choosing image processing filters.
-
-This component provides a multi-select interface for users to choose
-which filters to apply to their uploaded chest X-ray images.
-"""
-
 import streamlit as st
 from typing import List, Dict, Any
 
@@ -67,12 +60,7 @@ def render_filter_selector(filters: List[Dict[str, Any]]) -> List[str]:
 
 
 def render_filter_info_panel(filters: List[Dict[str, Any]]):
-    """
-    Render an information panel about available filters.
 
-    Args:
-        filters: List of filter dictionaries with metadata
-    """
     with st.expander("📖 Thông Tin Chi Tiết Về Các Bộ Lọc", expanded=False):
         st.markdown("### Các Bộ Lọc Có Sẵn")
 
@@ -100,12 +88,7 @@ def render_filter_info_panel(filters: List[Dict[str, Any]]):
 
 
 def get_quick_select_presets() -> Dict[str, List[str]]:
-    """
-    Get preset filter combinations for quick selection.
 
-    Returns:
-        Dictionary mapping preset names to filter ID lists
-    """
     return {
         "Phát hiện cạnh": ["sobel", "canny"],
         "Tăng cường độ tương phản": ["histogram", "gaussian"],
@@ -126,15 +109,7 @@ def get_quick_select_presets() -> Dict[str, List[str]]:
 
 
 def render_quick_select(filters: List[Dict[str, Any]]) -> List[str]:
-    """
-    Render quick select buttons for common filter combinations.
 
-    Args:
-        filters: List of available filters
-
-    Returns:
-        List of selected filter IDs (if a preset is clicked)
-    """
     st.markdown("#### ⚡ Chọn Nhanh")
 
     presets = get_quick_select_presets()

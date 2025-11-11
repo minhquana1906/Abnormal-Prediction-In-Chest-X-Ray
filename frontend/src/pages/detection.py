@@ -1,10 +1,3 @@
-"""
-Disease Detection page - Detect abnormalities in chest X-ray images with AI.
-
-This page allows medical professionals to upload chest X-ray images and
-detect potential abnormalities using YOLOv11s object detection model.
-"""
-
 import streamlit as st
 import base64
 from io import BytesIO
@@ -12,7 +5,6 @@ from PIL import Image
 import sys
 from pathlib import Path
 
-# Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from utils.api_client import (
@@ -27,7 +19,6 @@ from components.health_card import render_health_cards, render_detection_summary
 
 
 def initialize_session_state():
-    """Initialize session state variables."""
     if "detection_uploaded_image" not in st.session_state:
         st.session_state.detection_uploaded_image = None
     if "detection_image_id" not in st.session_state:
@@ -39,7 +30,6 @@ def initialize_session_state():
 
 
 def render_page_header():
-    """Render the page header with title and description."""
     st.title("🔬 Phát Hiện Bệnh Lý X-Quang")
 
     st.markdown(
@@ -50,7 +40,6 @@ def render_page_header():
 
 
 def check_backend_connection():
-    """Check backend connection and display status."""
     with st.spinner("🔍 Kiểm tra kết nối máy chủ..."):
         if not check_backend_health():
             st.error(
@@ -64,12 +53,6 @@ def check_backend_connection():
 
 
 def handle_image_upload(uploaded_file):
-    """
-    Handle image upload and store in session state.
-
-    Args:
-        uploaded_file: Streamlit UploadedFile object
-    """
     try:
         # Read image bytes
         image_bytes = uploaded_file.getvalue()
@@ -99,13 +82,6 @@ def handle_image_upload(uploaded_file):
 
 
 def handle_detection_analysis(image_id: str, draw_low_confidence: bool = False):
-    """
-    Handle detection analysis and store results.
-
-    Args:
-        image_id: Uploaded image ID
-        draw_low_confidence: Whether to draw low confidence detections
-    """
     try:
         # Analyze image with progress indicator
         with st.spinner("🔬 Đang phân tích ảnh với AI..."):
@@ -143,7 +119,6 @@ def handle_detection_analysis(image_id: str, draw_low_confidence: bool = False):
 
 
 def render_detection_page():
-    """Render the main disease detection page with single-page layout."""
     # Initialize session state
     initialize_session_state()
 
@@ -153,9 +128,6 @@ def render_detection_page():
     # Check backend connection
     check_backend_connection()
 
-    # ============================================================
-    # SECTION 1: UPLOAD IMAGE
-    # ============================================================
     st.header("📤 1. Tải Ảnh X-Quang")
 
     # File uploader
@@ -181,25 +153,18 @@ def render_detection_page():
                 max_width=300,
                 enable_fullscreen=False,  # No fullscreen for upload preview
             )
-            st.info(
-                f"ℹ️ {format_image_info(st.session_state.detection_uploaded_image)}"
-            )
+            st.info(f"ℹ️ {format_image_info(st.session_state.detection_uploaded_image)}")
     else:
         st.info("ℹ️ Vui lòng tải lên ảnh X-quang để tiếp tục")
 
     st.markdown("---")
 
-    # ============================================================
-    # SECTION 2: ANALYZE IMAGE
-    # ============================================================
     st.header("🔬 2. Phân Tích Phát Hiện Bệnh Lý")
 
     if st.session_state.detection_image_id is None:
         st.warning("⚠️ Vui lòng tải ảnh lên trước khi phân tích (Phần 1 phía trên)")
     else:
-        st.success(
-            f"✅ Ảnh đã sẵn sàng - ID: `{st.session_state.detection_image_id}`"
-        )
+        st.success(f"✅ Ảnh đã sẵn sàng - ID: `{st.session_state.detection_image_id}`")
 
         # Option to draw low confidence detections
         draw_low_confidence = st.checkbox(
@@ -223,9 +188,6 @@ def render_detection_page():
 
     st.markdown("---")
 
-    # ============================================================
-    # SECTION 3: RESULTS
-    # ============================================================
     st.header("✨ 3. Kết Quả Phân Tích")
 
     if st.session_state.detection_result is None:
@@ -329,7 +291,9 @@ def render_detection_page():
 
         # Performance info
         st.markdown("---")
-        st.caption(f"⏱️ Thời gian xử lý: {processing_time_ms}ms ({processing_time_ms/1000:.2f}s)")
+        st.caption(
+            f"⏱️ Thời gian xử lý: {processing_time_ms}ms ({processing_time_ms/1000:.2f}s)"
+        )
 
         st.markdown("---")
 

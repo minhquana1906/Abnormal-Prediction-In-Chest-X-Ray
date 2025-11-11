@@ -1,16 +1,8 @@
-"""
-Reusable image uploader component with Vietnamese error messages.
-
-This module provides a Streamlit file uploader widget configured for
-chest X-ray images with validation and error handling.
-"""
-
 import streamlit as st
 from typing import Optional, Tuple
 from PIL import Image
 import io
 
-# Constants
 MAX_FILE_SIZE_MB = 10
 MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 ALLOWED_TYPES = ["png", "jpg", "jpeg"]
@@ -19,16 +11,7 @@ ALLOWED_TYPES = ["png", "jpg", "jpeg"]
 def render_image_uploader(
     key: str = "image_uploader",
 ) -> Optional[Tuple[bytes, str, Image.Image]]:
-    """
-    Render an image uploader widget with validation.
 
-    Args:
-        key: Unique key for the uploader widget
-
-    Returns:
-        Tuple of (image_bytes, filename, PIL_image) if valid upload,
-        None if no file or invalid file
-    """
     uploaded_file = st.file_uploader(
         label="📁 Chọn ảnh X-quang ngực",
         type=ALLOWED_TYPES,
@@ -110,24 +93,10 @@ def display_image_with_caption(
     caption: str = "Ảnh X-quang ngực",
     width: str = "stretch",
 ):
-    """
-    Display an image with Vietnamese caption.
-
-    Args:
-        image: PIL Image to display
-        caption: Caption text in Vietnamese
-        width: Width of the image container
-    """
     st.image(image, caption=caption, width=width)
 
 
 def display_image_info(image: Image.Image) -> None:
-    """
-    Display image metadata information.
-
-    Args:
-        image: PIL Image to show info for
-    """
     width, height = image.size
     mode = image.mode
     format_name = image.format if image.format else "Unknown"
@@ -142,9 +111,6 @@ def display_image_info(image: Image.Image) -> None:
 
 
 def render_upload_instructions() -> None:
-    """
-    Render instructions for uploading images.
-    """
     st.markdown(
         """
     ### 📋 Hướng dẫn tải ảnh
@@ -163,12 +129,6 @@ def render_upload_instructions() -> None:
 
 
 def show_upload_error(error_message: str) -> None:
-    """
-    Display an upload error message in Vietnamese.
-
-    Args:
-        error_message: Error message to display
-    """
     st.error(
         f"❌ **Lỗi tải ảnh**\n\n"
         f"{error_message}\n\n"
@@ -177,13 +137,6 @@ def show_upload_error(error_message: str) -> None:
 
 
 def show_upload_success(filename: str, size_kb: float) -> None:
-    """
-    Display an upload success message in Vietnamese.
-
-    Args:
-        filename: Name of uploaded file
-        size_kb: File size in kilobytes
-    """
     st.success(
         f"✅ **Tải ảnh thành công**\n\n"
         f"Tên tệp: {filename}\n"

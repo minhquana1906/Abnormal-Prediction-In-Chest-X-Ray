@@ -1,13 +1,3 @@
-"""
-Streamlit main application for Chest X-Ray Abnormality Detection.
-
-This is the entry point for the frontend UI with two main pages:
-1. Image Filter Processing
-2. Disease Detection
-
-Navigation is done via sidebar with primary buttons.
-"""
-
 import streamlit as st
 
 # Page configuration
@@ -86,15 +76,3 @@ elif st.session_state.current_page == "filters":
         st.info(
             "🚧 Vui lòng đảm bảo backend đang chạy và dependencies đã được cài đặt."
         )
-
-# # Footer
-# st.markdown("---")
-# st.markdown(
-#     """
-# <div style='text-align: center; color: gray; font-size: 14px;'>
-#     🏥 Hệ thống phân tích X-quang ngực | Phiên bản MVP 1.0.0<br>
-#     ⚠️ Chỉ dùng cho mục đích nghiên cứu và giáo dục
-# </div>
-# """,
-#     unsafe_allow_html=True,
-# )
