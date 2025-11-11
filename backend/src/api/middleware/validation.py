@@ -1,6 +1,4 @@
-from typing import Optional
 from fastapi import UploadFile, HTTPException, status
-from PIL import Image
 
 from backend.src.config.settings import (
     MAX_FILE_SIZE_BYTES,

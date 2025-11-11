@@ -1,5 +1,3 @@
-"""Histogram equalization filter - custom implementation using NumPy primitives."""
-
 import numpy as np
 from loguru import logger
 import time

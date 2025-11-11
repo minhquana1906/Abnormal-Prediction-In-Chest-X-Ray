@@ -1,10 +1,3 @@
-"""
-YOLO Detector for Chest X-Ray Abnormality Detection.
-
-This module provides a wrapper around YOLOv11s for detecting abnormalities
-in chest X-ray images with Vietnamese labeling and health information.
-"""
-
 import time
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional, Any
@@ -25,29 +18,13 @@ from backend.src.utils.preprocessing import preprocess_image
 
 
 class YOLODetector:
-    """
-    Wrapper class for YOLOv11s model for chest X-ray abnormality detection.
-
-    Features:
-    - Load and cache YOLO model
-    - Perform inference with confidence filtering
-    - Classify detections by confidence tier
-    - Draw bounding boxes with Vietnamese labels
-    - Provide health information for detected conditions
-    """
 
     def __init__(
         self,
         model_path: Optional[Path] = None,
         confidence_threshold: float = YOLO_CONFIDENCE_THRESHOLD,
     ):
-        """
-        Initialize YOLO detector.
 
-        Args:
-            model_path: Path to model weights file (default: from settings)
-            confidence_threshold: Minimum confidence for detection (default: 0.4)
-        """
         self.model_path = model_path or MODEL_WEIGHTS_PATH
         self.confidence_threshold = confidence_threshold
         self.model = None
@@ -58,13 +35,6 @@ class YOLODetector:
         logger.info(f"Model path: {self.model_path}")
 
     def load_model(self):
-        """
-        Load YOLO model from weights file.
-
-        Raises:
-            FileNotFoundError: If model weights file doesn't exist
-            Exception: If model loading fails
-        """
         if self.model_loaded:
             logger.debug("Model already loaded, skipping")
             return
@@ -93,64 +63,24 @@ class YOLODetector:
             logger.exception(e)
             raise
 
-    def predict(
-        self, image: np.ndarray, apply_preprocessing: bool = True
-    ) -> List[Dict[str, Any]]:
-        """
-        Perform inference on chest X-ray image.
-
-        Args:
-            image: Input image as numpy array (H, W) or (H, W, 3)
-            apply_preprocessing: Whether to apply standard preprocessing pipeline (default: True)
-
-        Returns:
-            List of detection dictionaries with class, confidence, bbox
-
-        Raises:
-            RuntimeError: If model not loaded
-        """
+    def predict(self, image: np.ndarray) -> List[Dict[str, Any]]:
         if not self.model_loaded:
-            error_msg = ERROR_MODEL_NOT_LOADED
-            logger.error(error_msg)
-            raise RuntimeError(error_msg)
+            raise RuntimeError(ERROR_MODEL_NOT_LOADED)
 
-        logger.info(
-            f"Running YOLO inference - Image shape: {image.shape}, dtype: {image.dtype}"
-        )
+        logger.info(f"Inference - Image: {image.shape}, {image.dtype}")
 
-        # Apply standard preprocessing if enabled
-        if apply_preprocessing:
-            logger.info(
-                "Applying standard preprocessing pipeline (histogram eq + Gaussian blur + normalization)"
-            )
-            original_shape = image.shape
-
-            # Preprocess image (returns float32 normalized to [0, 1])
-            preprocessed = preprocess_image(
-                image, target_size=None, apply_normalization=True
-            )
-
-            # Convert back to uint8 for YOLO input (expects 0-255 range)
-            image = (preprocessed * 255).astype(np.uint8)
-
-            # CRITICAL: Convert grayscale to RGB (YOLO expects 3 channels)
-            # Stack grayscale to create (H, W, 3) shape
-            if len(image.shape) == 2:
-                image = np.stack([image, image, image], axis=-1)
-                logger.info("Converted grayscale to RGB (duplicated channels)")
-
-            logger.info(
-                f"Preprocessing complete - Shape: {original_shape} -> {image.shape}"
-            )
+        # Preprocess: histogram equalization only
+        image = preprocess_image(image)
+        logger.info(f"Preprocessed: {image.shape}, {image.dtype}")
 
         start_time = time.time()
 
-        # Run inference
+        # YOLO auto-handles: resize, normalize, letterbox, grayscale→RGB
         results = self.model.predict(
             image,
             conf=self.confidence_threshold,
             verbose=False,
-            imgsz=1024,  # Match training image size
+            imgsz=1024,
         )
 
         end_time = time.time()
@@ -189,32 +119,12 @@ class YOLODetector:
 
                     detections.append(detection)
 
-        logger.info(
-            f"YOLO inference complete - {len(detections)} detections found in {inference_time_ms}ms"
-        )
-
-        # Log detected classes (T047)
-        if detections:
-            for det in detections:
-                logger.info(
-                    f"  - {det['class_name_en']}: {det['confidence']:.3f} "
-                    f"at [{det['bbox']['x1']}, {det['bbox']['y1']}, {det['bbox']['x2']}, {det['bbox']['y2']}]"
-                )
-        else:
-            logger.info("  - No abnormalities detected (Normal)")
+        inference_time_ms = int((time.time() - start_time) * 1000)
+        logger.info(f"Found {len(detections)} detections in {inference_time_ms}ms")
 
         return detections
 
     def classify_confidence_tier(self, confidence: float) -> str:
-        """
-        Classify confidence score into tier (T044).
-
-        Args:
-            confidence: Confidence score (0.0 to 1.0)
-
-        Returns:
-            Tier name: 'high', 'medium', or 'low'
-        """
         if confidence > YOLO_CONFIDENCE_HIGH:
             return "high"
         elif confidence >= YOLO_CONFIDENCE_MEDIUM:
@@ -225,15 +135,6 @@ class YOLODetector:
     def add_vietnamese_labels_and_health_info(
         self, detections: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        """
-        Add Vietnamese labels, confidence tiers, and health information to detections (T046).
-
-        Args:
-            detections: List of detection dictionaries
-
-        Returns:
-            Enhanced detection dictionaries with Vietnamese info
-        """
         enhanced_detections = []
 
         for det in detections:
@@ -271,17 +172,6 @@ class YOLODetector:
         detections: List[Dict[str, Any]],
         draw_low_confidence: bool = False,
     ) -> np.ndarray:
-        """
-        Draw bounding boxes on image with Vietnamese labels (T045).
-
-        Args:
-            image: Input image as numpy array
-            detections: List of detection dictionaries (with Vietnamese labels)
-            draw_low_confidence: Whether to draw low confidence (<40%) boxes
-
-        Returns:
-            Image with bounding boxes drawn
-        """
         # Convert to PIL for drawing
         if len(image.shape) == 2:
             # Grayscale to RGB
@@ -291,8 +181,6 @@ class YOLODetector:
 
         draw = ImageDraw.Draw(pil_image)
 
-        # Try to load a Vietnamese-compatible font with larger size
-        # Priority: Arial Unicode MS (best for Vietnamese) > Arial > Segoe UI > Default
         font = None
         font_size = 48  # Even larger font for better visibility
         font_paths = [
@@ -355,26 +243,30 @@ class YOLODetector:
             text_padding = 8
             label_x = bbox["x1"]
             label_y = bbox["y1"] - font_size - text_padding * 2
-            
+
             # If label goes above image, put it below the top of bbox
             if label_y < 0:
                 label_y = bbox["y1"] + 5
 
             # Background for text with padding
-            bbox_text = draw.textbbox((label_x + text_padding, label_y + text_padding), label, font=font)
+            bbox_text = draw.textbbox(
+                (label_x + text_padding, label_y + text_padding), label, font=font
+            )
             # Expand background box for padding
             background_box = [
                 bbox_text[0] - text_padding,
                 bbox_text[1] - text_padding,
                 bbox_text[2] + text_padding,
-                bbox_text[3] + text_padding
+                bbox_text[3] + text_padding,
             ]
             draw.rectangle(background_box, fill=color)
-            
+
             # Draw text in yellow with bold effect (draw multiple times slightly offset)
             text_pos = (label_x + text_padding, label_y + text_padding)
             # Draw shadow for better readability
-            draw.text((text_pos[0] + 2, text_pos[1] + 2), label, fill=(0, 0, 0), font=font)
+            draw.text(
+                (text_pos[0] + 2, text_pos[1] + 2), label, fill=(0, 0, 0), font=font
+            )
             # Draw main text in yellow
             draw.text(text_pos, label, fill=(255, 255, 0), font=font)
 
@@ -388,16 +280,6 @@ class YOLODetector:
         return annotated_image
 
     def _draw_dashed_rectangle(self, draw, coords, outline, width=1, dash_length=10):
-        """
-        Draw a dashed rectangle (helper for T045).
-
-        Args:
-            draw: PIL ImageDraw object
-            coords: [(x1, y1), (x2, y2)]
-            outline: Color
-            width: Line width
-            dash_length: Length of each dash
-        """
         x1, y1 = coords[0]
         x2, y2 = coords[1]
 
@@ -426,72 +308,41 @@ class YOLODetector:
             )
 
     def detect_and_annotate(
-        self,
-        image: np.ndarray,
-        return_enhanced: bool = True,
-        apply_preprocessing: bool = True,
+        self, image: np.ndarray
     ) -> Tuple[np.ndarray, List[Dict[str, Any]], bool]:
-        """
-        Complete detection pipeline: predict, enhance, and annotate.
-
-        Args:
-            image: Input image as numpy array
-            return_enhanced: Whether to return enhanced detections with health info
-            apply_preprocessing: Whether to apply standard preprocessing pipeline (default: True)
-
-        Returns:
-            Tuple of (annotated_image, detections, is_normal)
-        """
-        logger.info("Starting complete detection pipeline")
-
-        # Ensure model is loaded
         if not self.model_loaded:
             self.load_model()
 
-        # Perform detection (T043) with preprocessing
-        detections = self.predict(image, apply_preprocessing=apply_preprocessing)
+        # Run detection
+        detections = self.predict(image)
 
-        # Check if normal (no detections) - T049
-        # NOTE: Normal images are identified by lack of detections with confidence >= threshold
-        # YOLO learns from negative samples (images with no annotations)
-        # No "Normal" class is used during training or inference
+        # Check if normal (no detections above threshold)
         is_normal = len(detections) == 0
 
         if is_normal:
-            logger.info("Image classified as NORMAL (no abnormalities detected)")
-            # Return original image for normal cases
+            logger.info("No abnormalities detected")
             if len(image.shape) == 2:
                 annotated_image = np.stack([image] * 3, axis=-1)
             else:
                 annotated_image = image.copy()
-
             return annotated_image, [], True
 
-        # Enhance detections with Vietnamese labels and health info (T046)
-        if return_enhanced:
-            detections = self.add_vietnamese_labels_and_health_info(detections)
+        # Add Vietnamese labels + health info
+        detections = self.add_vietnamese_labels_and_health_info(detections)
 
-        # Draw bounding boxes (T045)
+        # Draw bounding boxes
         annotated_image = self.draw_bounding_boxes(image, detections)
 
-        logger.success(
-            f"Detection pipeline complete - {len(detections)} abnormalities found"
-        )
+        logger.info(f"Detection complete - {len(detections)} abnormalities found")
 
         return annotated_image, detections, False
 
 
-# Singleton instance
 _detector_instance = None
 
 
 def get_detector() -> YOLODetector:
-    """
-    Get singleton YOLO detector instance.
 
-    Returns:
-        YOLODetector instance
-    """
     global _detector_instance
 
     if _detector_instance is None:

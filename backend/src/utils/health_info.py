@@ -1,10 +1,3 @@
-"""
-Utility functions for loading and accessing Vietnamese health information.
-
-This module provides functions to load health information (descriptions and warnings)
-for disease classes from the configuration file.
-"""
-
 import json
 from typing import Dict, Optional, Tuple
 from pathlib import Path
@@ -13,21 +6,11 @@ from backend.src.config.settings import HEALTH_INFO_PATH
 from backend.src.utils.logging_config import logger
 
 
-# Cache for loaded health information
 _health_info_cache: Optional[Dict[str, Dict[str, str]]] = None
 
 
 def load_health_info() -> Dict[str, Dict[str, str]]:
-    """
-    Load health information from JSON configuration file.
 
-    Returns:
-        Dictionary mapping class names to health info (description and warning)
-
-    Raises:
-        FileNotFoundError: If health info file doesn't exist
-        json.JSONDecodeError: If health info file is invalid JSON
-    """
     global _health_info_cache
 
     # Return cached info if available
@@ -57,16 +40,7 @@ def load_health_info() -> Dict[str, Dict[str, str]]:
 
 
 def get_health_info(class_name: str) -> Optional[Dict[str, str]]:
-    """
-    Get health information for a disease class.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Dictionary with 'description' and 'warning' keys,
-        or None if class not found
-    """
     health_info = load_health_info()
 
     info = health_info.get(class_name)
@@ -78,15 +52,7 @@ def get_health_info(class_name: str) -> Optional[Dict[str, str]]:
 
 
 def get_description(class_name: str) -> str:
-    """
-    Get health description for a disease class.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Vietnamese health description, or empty string if not found
-    """
     info = get_health_info(class_name)
 
     if info is None:
@@ -96,15 +62,7 @@ def get_description(class_name: str) -> str:
 
 
 def get_warning(class_name: str) -> str:
-    """
-    Get health warning for a disease class.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Vietnamese warning message, or empty string if not found
-    """
     info = get_health_info(class_name)
 
     if info is None:
@@ -114,15 +72,7 @@ def get_warning(class_name: str) -> str:
 
 
 def get_description_and_warning(class_name: str) -> Tuple[str, str]:
-    """
-    Get both description and warning for a disease class.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Tuple of (description, warning)
-    """
     info = get_health_info(class_name)
 
     if info is None:
@@ -135,36 +85,18 @@ def get_description_and_warning(class_name: str) -> Tuple[str, str]:
 
 
 def get_all_health_info() -> Dict[str, Dict[str, str]]:
-    """
-    Get all health information for all classes.
 
-    Returns:
-        Complete health information dictionary
-    """
     return load_health_info()
 
 
 def has_health_info(class_name: str) -> bool:
-    """
-    Check if health information exists for a class.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        True if health info exists
-    """
     health_info = load_health_info()
     return class_name in health_info
 
 
 def reload_health_info() -> Dict[str, Dict[str, str]]:
-    """
-    Force reload of health information from file (clears cache).
 
-    Returns:
-        Reloaded health information dictionary
-    """
     global _health_info_cache
 
     # Clear cache
@@ -176,15 +108,7 @@ def reload_health_info() -> Dict[str, Dict[str, str]]:
 
 
 def format_health_info_for_display(class_name: str) -> str:
-    """
-    Format health information for display in UI.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Formatted health info string with description and warning
-    """
     description, warning = get_description_and_warning(class_name)
 
     if not description and not warning:
@@ -202,15 +126,7 @@ def format_health_info_for_display(class_name: str) -> str:
 
 
 def get_severity_emoji(class_name: str) -> str:
-    """
-    Get emoji representing severity of condition based on warning text.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Emoji string (⚠️, 🚨, ℹ️)
-    """
     warning = get_warning(class_name)
 
     # Check warning severity
@@ -223,29 +139,13 @@ def get_severity_emoji(class_name: str) -> str:
 
 
 def is_emergency_condition(class_name: str) -> bool:
-    """
-    Check if a condition is considered an emergency.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        True if emergency condition
-    """
     warning = get_warning(class_name)
     return "KHẨN CẤP" in warning
 
 
 def get_recommended_action(class_name: str) -> str:
-    """
-    Extract recommended action from health information.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Recommended action text
-    """
     warning = get_warning(class_name)
 
     # Emergency conditions
@@ -264,15 +164,7 @@ def get_recommended_action(class_name: str) -> str:
 
 
 def get_health_info_summary(class_name: str) -> Dict[str, str]:
-    """
-    Get a structured summary of health information.
 
-    Args:
-        class_name: Disease class name (English)
-
-    Returns:
-        Dictionary with structured health info
-    """
     description, warning = get_description_and_warning(class_name)
 
     return {

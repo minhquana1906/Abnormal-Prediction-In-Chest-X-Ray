@@ -1,10 +1,3 @@
-"""
-Configuration settings for the Chest X-Ray Abnormality Detection backend.
-
-This module contains all configuration constants used throughout the application,
-including file upload limits, allowed formats, and performance targets.
-"""
-
 from pathlib import Path
 
 # Project root directory
@@ -128,7 +121,6 @@ FILTER_PARAMETERS = {
 # Session management
 SESSION_TIMEOUT_MINUTES = 30  # Clear in-memory data after 30 minutes of inactivity
 
-# Error messages (English - backend)
 ERROR_FILE_TOO_LARGE = f"File size exceeds maximum limit of {MAX_FILE_SIZE_MB}MB"
 ERROR_INVALID_FORMAT = (
     f"Invalid file format. Allowed formats: {', '.join(ALLOWED_IMAGE_FORMATS)}"
