@@ -291,10 +291,25 @@ class YOLODetector:
 
         draw = ImageDraw.Draw(pil_image)
 
-        # Try to load a font (fall back to default if not available)
-        try:
-            font = ImageFont.truetype("arial.ttf", 20)
-        except:
+        # Try to load a Vietnamese-compatible font with larger size
+        # Priority: Arial Unicode MS (best for Vietnamese) > Arial > Segoe UI > Default
+        font = None
+        font_size = 48  # Even larger font for better visibility
+        font_paths = [
+            "C:/Windows/Fonts/arialuni.ttf",  # Arial Unicode MS (best for Vietnamese)
+            "C:/Windows/Fonts/arial.ttf",  # Arial
+            "C:/Windows/Fonts/segoeui.ttf",  # Segoe UI
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",  # Linux fallback
+        ]
+        for font_path in font_paths:
+            try:
+                font = ImageFont.truetype(font_path, font_size)
+                logger.debug(f"Loaded font: {font_path} with size {font_size}")
+                break
+            except:
+                continue
+        if font is None:
+            logger.warning("Could not load TrueType font, using default font")
             font = ImageFont.load_default()
 
         colors = {
@@ -336,12 +351,32 @@ class YOLODetector:
             confidence = det["confidence"]
             label = f"{class_name_vi} {confidence:.0%}"
 
-            # Background for text
-            bbox_text = draw.textbbox((bbox["x1"], bbox["y1"] - 25), label, font=font)
-            draw.rectangle(bbox_text, fill=color)
-            draw.text(
-                (bbox["x1"], bbox["y1"] - 25), label, fill=(255, 255, 255), font=font
-            )
+            # Calculate text position with padding
+            text_padding = 8
+            label_x = bbox["x1"]
+            label_y = bbox["y1"] - font_size - text_padding * 2
+            
+            # If label goes above image, put it below the top of bbox
+            if label_y < 0:
+                label_y = bbox["y1"] + 5
+
+            # Background for text with padding
+            bbox_text = draw.textbbox((label_x + text_padding, label_y + text_padding), label, font=font)
+            # Expand background box for padding
+            background_box = [
+                bbox_text[0] - text_padding,
+                bbox_text[1] - text_padding,
+                bbox_text[2] + text_padding,
+                bbox_text[3] + text_padding
+            ]
+            draw.rectangle(background_box, fill=color)
+            
+            # Draw text in yellow with bold effect (draw multiple times slightly offset)
+            text_pos = (label_x + text_padding, label_y + text_padding)
+            # Draw shadow for better readability
+            draw.text((text_pos[0] + 2, text_pos[1] + 2), label, fill=(0, 0, 0), font=font)
+            # Draw main text in yellow
+            draw.text(text_pos, label, fill=(255, 255, 0), font=font)
 
         # Convert back to numpy
         annotated_image = np.array(pil_image)

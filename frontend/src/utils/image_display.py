@@ -1,6 +1,8 @@
 import streamlit as st
 from PIL import Image
 import numpy as np
+import base64
+from io import BytesIO
 from typing import Optional, Union
 
 
@@ -9,32 +11,90 @@ def display_xray_image(
     caption: str = "",
     width: str = "content",
     max_width: int = 600,
+    enable_fullscreen: bool = True,
 ) -> None:
+    """
+    Display X-ray image with centered alignment and optional fullscreen feature.
+    
+    Args:
+        image: PIL Image or numpy array
+        caption: Caption text for the image
+        width: Width mode (ignored, using max_width instead)
+        max_width: Maximum width in pixels
+        enable_fullscreen: Whether to show fullscreen button
+    """
     # Convert numpy array to PIL if needed
     if isinstance(image, np.ndarray):
         image = Image.fromarray(image)
 
-    # Use custom CSS for image sizing
-    if not width == "content":
-        # Apply max-width constraint with CSS
-        st.markdown(
-            f"""
-            <style>
-            .stImage img {{
-                max-width: {max_width}px !important;
-                width: 100% !important;
-                height: auto !important;
-                display: block !important;
-                margin-left: auto !important;
-                margin-right: auto !important;
-            }}
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
+    # Apply custom CSS for centered image with fixed size
+    st.markdown(
+        f"""
+        <style>
+        .stImage {{
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }}
+        .stImage img {{
+            max-width: {max_width}px !important;
+            max-height: {max_width}px !important;
+            width: auto !important;
+            height: auto !important;
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            object-fit: contain !important;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
     # Display image
-    st.image(image, caption=caption, width=width)
+    st.image(image, caption=caption, width='content')
+    
+    # Add fullscreen button
+    if enable_fullscreen:
+        expander_key = f"fullscreen_{hash(caption)}"
+        with st.expander("🔍 Xem ảnh toàn màn hình", expanded=False):
+            st.markdown(
+                """
+                <style>
+                .fullscreen-image {{
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                }}
+                .fullscreen-image img {{
+                    max-width: 100% !important;
+                    max-height: 90vh !important;
+                    width: auto !important;
+                    height: auto !important;
+                    display: block !important;
+                    margin-left: auto !important;
+                    margin-right: auto !important;
+                    object-fit: contain !important;
+                }}
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+            # Display full-size image
+            st.markdown('<div class="fullscreen-image">', unsafe_allow_html=True)
+            st.image(image, width='stretch')
+            st.markdown('</div>', unsafe_allow_html=True)
+            # Download button in fullscreen view
+            buffer = BytesIO()
+            image.save(buffer, format="PNG")
+            img_bytes = buffer.getvalue()
+            st.download_button(
+                label="📥 Tải xuống ảnh",
+                data=img_bytes,
+                file_name=f"xray_image.png",
+                mime="image/png",
+                width='stretch',
+            )
 
 
 def display_xray_comparison(

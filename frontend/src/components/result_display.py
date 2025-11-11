@@ -114,7 +114,38 @@ def render_single_result(result: Dict[str, Any], result_number: int):
         # Decode and display image
         try:
             processed_image = decode_base64_image(image_base64)
-            st.image(processed_image, width="stretch")
+            
+            # Display thumbnail
+            st.image(processed_image, use_container_width=True)
+            
+            # Fullscreen view
+            with st.expander("🔍 Xem ảnh toàn màn hình", expanded=False):
+                st.markdown(
+                    """
+                    <style>
+                    .fullscreen-filter-image {{
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                    }}
+                    .fullscreen-filter-image img {{
+                        max-width: 100% !important;
+                        max-height: 90vh !important;
+                        width: auto !important;
+                        height: auto !important;
+                        display: block !important;
+                        margin-left: auto !important;
+                        margin-right: auto !important;
+                        object-fit: contain !important;
+                    }}
+                    </style>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                
+                st.markdown('<div class="fullscreen-filter-image">', unsafe_allow_html=True)
+                st.image(processed_image, use_container_width=True)
+                st.markdown('</div>', unsafe_allow_html=True)
 
             # Download button
             download_filename = f"{filter_name}_processed.png"
@@ -124,7 +155,7 @@ def render_single_result(result: Dict[str, Any], result_number: int):
                 file_name=download_filename,
                 mime="image/png",
                 key=f"download_{filter_name}_{result_number}",
-                width="stretch",
+                use_container_width=True,
             )
 
         except Exception as e:

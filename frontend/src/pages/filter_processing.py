@@ -172,6 +172,7 @@ def render_filter_processing_page():
                 st.session_state.uploaded_image,
                 f"📷 {st.session_state.uploaded_filename}",
                 max_width=300,
+                enable_fullscreen=False,  # No fullscreen for upload preview
             )
             st.info(f"ℹ️ {format_image_info(st.session_state.uploaded_image)}")
     else:
