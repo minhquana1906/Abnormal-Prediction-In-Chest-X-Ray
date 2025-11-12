@@ -61,7 +61,7 @@ def render_single_result(result: Dict[str, Any], result_number: int):
             processed_image = decode_base64_image(image_base64)
 
             # Display thumbnail
-            st.image(processed_image, use_container_width=True)
+            st.image(processed_image, width="stretch")
 
             # Fullscreen view
             with st.expander("🔍 Xem ảnh toàn màn hình", expanded=False):
@@ -91,7 +91,7 @@ def render_single_result(result: Dict[str, Any], result_number: int):
                 st.markdown(
                     '<div class="fullscreen-filter-image">', unsafe_allow_html=True
                 )
-                st.image(processed_image, use_container_width=True)
+                st.image(processed_image, width="stretch")
                 st.markdown("</div>", unsafe_allow_html=True)
 
             # Download button
@@ -102,7 +102,7 @@ def render_single_result(result: Dict[str, Any], result_number: int):
                 file_name=download_filename,
                 mime="image/png",
                 key=f"download_{filter_name}_{result_number}",
-                use_container_width=True,
+                width="stretch",
             )
 
         except Exception as e:

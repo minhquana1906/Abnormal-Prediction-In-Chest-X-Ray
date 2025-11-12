@@ -1,10 +1,3 @@
-"""
-Filter Processing page - Apply image processing filters to chest X-ray images.
-
-This page allows medical professionals to upload chest X-ray images and
-apply various image processing filters to enhance visualization.
-"""
-
 import streamlit as st
 from PIL import Image
 import io
@@ -30,10 +23,8 @@ from components.filter_selector import (
     render_quick_select,
 )
 from components.result_display import (
-    render_original_image,
     render_processed_results,
     render_download_all_button,
-    render_performance_summary,
 )
 
 
@@ -127,7 +118,7 @@ def handle_filter_application(image_id: str, selected_filters: list):
         st.session_state.filter_results = response
 
         st.success(f"✅ Đã xử lý thành công {len(response['results'])} bộ lọc!")
-        st.balloons()
+        # st.balloons()
 
     except APIError as e:
         st.error(format_api_error(e))
@@ -180,9 +171,6 @@ def render_filter_processing_page():
 
     st.markdown("---")
 
-    # ============================================================
-    # SECTION 2: SELECT FILTERS
-    # ============================================================
     st.header("🎛️ 2. Chọn Bộ Lọc Xử Lý")
 
     if st.session_state.image_id is None:
@@ -236,9 +224,6 @@ def render_filter_processing_page():
 
     st.markdown("---")
 
-    # ============================================================
-    # SECTION 3: RESULTS
-    # ============================================================
     st.header("✨ 3. Kết Quả Xử Lý")
 
     if st.session_state.filter_results is None:
@@ -252,18 +237,12 @@ def render_filter_processing_page():
 
         st.markdown("---")
 
-        # # Performance summary
-        # render_performance_summary(results, total_time_ms)
-
-        # st.markdown("---")
-
-        # Download all button
         if len(results) > 1:
             render_download_all_button(results, st.session_state.uploaded_filename)
 
         # Reset button
         st.markdown("---")
-        if st.button("🔄 Xử Lý Ảnh Mới", width="stretch"):
+        if st.button("🔄 Làm Mới", width="stretch"):
             # Clear session state
             st.session_state.uploaded_image = None
             st.session_state.image_id = None
@@ -273,6 +252,5 @@ def render_filter_processing_page():
             st.rerun()
 
 
-# Main entry point
 if __name__ == "__main__":
     render_filter_processing_page()

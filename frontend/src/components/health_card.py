@@ -60,8 +60,6 @@ def render_health_card(detection: Dict) -> None:
         else:
             st.warning(f"⚠️ **Lưu ý:** {health_warning}")
 
-    st.markdown("---")
-
 
 def render_health_cards(detections: List[Dict]) -> None:
     if not detections:
@@ -78,7 +76,7 @@ def render_health_cards(detections: List[Dict]) -> None:
     for i, detection in enumerate(sorted_detections, 1):
         with st.expander(
             f"{i}. {detection.get('class_name_vi', 'N/A')} - {detection.get('confidence', 0):.1%}",
-            expanded=(i == 1),  # Expand first card by default
+            expanded=True,  # Expand first card by default
         ):
             render_health_card(detection)
 

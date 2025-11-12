@@ -100,7 +100,7 @@ def handle_detection_analysis(image_id: str, draw_low_confidence: bool = False):
                 st.success(
                     f"✅ Phân tích hoàn tất! Phát hiện {len(detections)} bất thường."
                 )
-                st.balloons()
+                # st.balloons()
         else:
             # Error handling
             error_msg = (
@@ -140,9 +140,11 @@ def render_detection_page():
     )
 
     if uploaded_file is not None:
-        # Check if this is a new upload
+        # Check if this is a new upload (different file or name)
         if st.session_state.detection_uploaded_filename != uploaded_file.name:
             handle_image_upload(uploaded_file)
+            # Reset previous analysis results when new image is uploaded
+            st.session_state.detection_result = None
 
         # Display uploaded image with size constraint
         if st.session_state.detection_uploaded_image is not None:
@@ -150,7 +152,7 @@ def render_detection_page():
             display_xray_image(
                 st.session_state.detection_uploaded_image,
                 f"📷 {st.session_state.detection_uploaded_filename}",
-                max_width=300,
+                max_width=600,
                 enable_fullscreen=False,  # No fullscreen for upload preview
             )
             st.info(f"ℹ️ {format_image_info(st.session_state.detection_uploaded_image)}")
@@ -179,7 +181,7 @@ def render_detection_page():
         if st.button(
             "🔬 Phân Tích Ảnh",
             type="primary",
-            use_container_width=True,
+            width="stretch",
             key="analyze_detection_btn",
         ):
             handle_detection_analysis(
@@ -188,7 +190,7 @@ def render_detection_page():
 
     st.markdown("---")
 
-    st.header("✨ 3. Kết Quả Phân Tích")
+    st.header("✨ 3. Kết Quả Phân Tích & Thông Tin Sức Khỏe")
 
     if st.session_state.detection_result is None:
         st.info("ℹ️ Chưa có kết quả. Vui lòng phân tích ảnh ở Phần 2 phía trên")
@@ -201,41 +203,32 @@ def render_detection_page():
 
         # Display result summary
         if is_normal:
-            st.success(
+            # Show original image for normal case
+            if st.session_state.detection_uploaded_image:
+                st.markdown("#### Ảnh X-quang:")
+                display_xray_image(
+                    st.session_state.detection_uploaded_image,
+                    "Ảnh X-quang - Không phát hiện bệnh lý",
+                    max_width=600,
+                    enable_fullscreen=False,
+                )
+
+            st.info(
                 """
-                ## ✅ Kết quả: Bình thường
+                #### ℹ️ Kết quả: Không phát hiện bệnh lý
                 
-                Không phát hiện bất thường trong ảnh X-quang ngực.
+                Cơ thể bình thường hoặc có thể ẩn chứa một số bệnh lý khác nằm ngoài 2 bệnh trên, 
+                bạn nên liên hệ bác sĩ chuyên khoa ngay để được thăm khám và tư vấn điều trị.
                 
                 **Lưu ý quan trọng:**
-                - Kết quả này chỉ mang tính chất tham khảo từ AI
+                - Kết quả này chỉ phát hiện 2 bệnh: "Tim to bất thường" và "Phình động mạch chủ"
+                - AI chỉ được huấn luyện trên những bệnh này, có thể bỏ sót các bệnh lý khác
                 - Không thay thế chẩn đoán y khoa chuyên nghiệp
                 - Vui lòng tham khảo ý kiến bác sĩ chuyên khoa để được tư vấn chính xác
                 """
             )
 
-            # Show original image for normal case
-            if st.session_state.detection_uploaded_image:
-                st.markdown("#### Ảnh X-quang (Bình thường):")
-                display_xray_image(
-                    st.session_state.detection_uploaded_image,
-                    "Ảnh X-quang bình thường",
-                    max_width=300,
-                    enable_fullscreen=True,
-                )
         else:
-            st.warning(
-                f"""
-                ## ⚠️ Phát hiện {len(detections)} bất thường
-                
-                Hệ thống đã phát hiện các dấu hiệu bất thường trong ảnh X-quang.
-                
-                **Khuyến nghị:**
-                - Liên hệ bác sĩ chuyên khoa ngay để được thăm khám
-                - Xem chi tiết thông tin sức khỏe bên dưới
-                """
-            )
-
             # Display annotated image
             if annotated_image_b64:
                 try:
@@ -248,8 +241,8 @@ def render_detection_page():
                     display_xray_image(
                         annotated_image,
                         f"Phát hiện {len(detections)} bất thường",
-                        max_width=300,
-                        enable_fullscreen=True,
+                        max_width=600,
+                        enable_fullscreen=False,
                     )
 
                     # Download button for annotated image
@@ -264,74 +257,27 @@ def render_detection_page():
                         file_name=f"detection_{st.session_state.detection_uploaded_filename}.png",
                         mime="image/png",
                         help="Tải xuống ảnh với khung đánh dấu bệnh lý",
-                        use_container_width=True,
+                        width="stretch",
                     )
 
                 except Exception as e:
                     st.error(f"❌ Lỗi hiển thị ảnh: {str(e)}")
 
-            # Show detection details
-            if detections:
-                st.markdown("---")
-                st.markdown("### 📋 Danh sách phát hiện chi tiết:")
-
-                for i, det in enumerate(detections, 1):
-                    tier_icon = {"high": "🔴", "medium": "🟠", "low": "⚪"}.get(
-                        det.get("confidence_tier", "medium"), "⚪"
-                    )
-
-                    confidence = det.get("confidence", 0)
-                    class_name_vi = det.get("class_name_vi", "N/A")
-                    class_name_en = det.get("class_name_en", "N/A")
-
-                    st.markdown(
-                        f"{i}. {tier_icon} **{class_name_vi}** ({class_name_en}) - "
-                        f"Độ tin cậy: **{confidence:.1%}**"
-                    )
-
-        # Performance info
-        st.markdown("---")
-        st.caption(
-            f"⏱️ Thời gian xử lý: {processing_time_ms}ms ({processing_time_ms/1000:.2f}s)"
-        )
-
-        st.markdown("---")
-
-        # Health information section
-        if not is_normal and detections:
-            st.header("📊 4. Thông Tin Sức Khỏe Chi Tiết")
-
-            # Show summary
-            render_detection_summary(detections, is_normal)
-
             st.markdown("---")
-
             # Show health cards for each detection
             render_health_cards(detections)
-        elif is_normal:
-            st.header("📊 4. Thông Tin Sức Khỏe")
-            st.success(
-                """
-                ### ✅ Không có bất thường
-                
-                Ảnh X-quang ngực của bạn không có dấu hiệu bất thường theo kết quả phân tích AI.
-                
-                **Tuy nhiên, xin lưu ý:**
-                - Kết quả này chỉ mang tính chất tham khảo
-                - Không thay thế việc khám và tư vấn y tế chuyên nghiệp
-                - Nếu có triệu chứng bất thường, vui lòng đến cơ sở y tế để được thăm khám
-                """
-            )
 
         st.markdown("---")
 
         # Reset button
-        if st.button("🔄 Phân Tích Ảnh Mới", use_container_width=True):
+        if st.button("🔄 Làm Mới", width="stretch"):
             # Clear session state
             st.session_state.detection_uploaded_image = None
             st.session_state.detection_image_id = None
             st.session_state.detection_uploaded_filename = None
             st.session_state.detection_result = None
+            st.cache_data.clear()
+            st.cache_resource.clear()
             st.rerun()
 
 

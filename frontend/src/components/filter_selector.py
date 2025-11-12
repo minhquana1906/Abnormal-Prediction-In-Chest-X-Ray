@@ -60,31 +60,27 @@ def render_filter_selector(filters: List[Dict[str, Any]]) -> List[str]:
 
 
 def render_filter_info_panel(filters: List[Dict[str, Any]]):
+    for filter_info in filters:
+        filter_name = filter_info["name"]
+        filter_name_vi = filter_info.get("name_vi", filter_name)
+        filter_desc = filter_info["description"]
+        filter_desc_vi = filter_info.get("description_vi", filter_desc)
+        filter_params = filter_info.get("parameters", {})
+        output_type = filter_info.get("output_type", "grayscale")
 
-    with st.expander("📖 Thông Tin Chi Tiết Về Các Bộ Lọc", expanded=False):
-        st.markdown("### Các Bộ Lọc Có Sẵn")
+        st.markdown(f"#### {filter_name_vi}")
+        st.markdown(f"**Mô tả:** {filter_desc_vi}")
+        st.markdown(f"**Loại đầu ra:** {output_type}")
 
-        for filter_info in filters:
-            filter_name = filter_info["name"]
-            filter_name_vi = filter_info.get("name_vi", filter_name)
-            filter_desc = filter_info["description"]
-            filter_desc_vi = filter_info.get("description_vi", filter_desc)
-            filter_params = filter_info.get("parameters", {})
-            output_type = filter_info.get("output_type", "grayscale")
+        if filter_params:
+            st.markdown("**Tham số:**")
+            for param_name, param_value in filter_params.items():
+                if param_value is not None:
+                    st.markdown(f"- `{param_name}`: {param_value}")
+                else:
+                    st.markdown(f"- `{param_name}`: Tự động")
 
-            st.markdown(f"#### {filter_name_vi}")
-            st.markdown(f"**Mô tả:** {filter_desc_vi}")
-            st.markdown(f"**Loại đầu ra:** {output_type}")
-
-            if filter_params:
-                st.markdown("**Tham số:**")
-                for param_name, param_value in filter_params.items():
-                    if param_value is not None:
-                        st.markdown(f"- `{param_name}`: {param_value}")
-                    else:
-                        st.markdown(f"- `{param_name}`: Tự động")
-
-            st.markdown("---")
+        st.markdown("---")
 
 
 def get_quick_select_presets() -> Dict[str, List[str]]:
