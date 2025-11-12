@@ -100,7 +100,7 @@ async def analyze_image(request: DetectionRequest):
         # Run detection pipeline
         try:
             annotated_image, detections, is_normal = detector.detect_and_annotate(
-                numpy_image, return_enhanced=True
+                numpy_image
             )
         except Exception as detection_error:
             logger.error(f"[DETECTION] Detection failed: {str(detection_error)}")

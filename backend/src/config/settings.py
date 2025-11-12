@@ -5,7 +5,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 
 # Model paths
 MODEL_DIR = PROJECT_ROOT / "models"
-MODEL_WEIGHTS_PATH = MODEL_DIR / "best.pt"
+MODEL_WEIGHTS_PATH = MODEL_DIR / "hard_augmented.pt"
 
 # Configuration file paths
 CONFIG_DIR = PROJECT_ROOT / "configs"

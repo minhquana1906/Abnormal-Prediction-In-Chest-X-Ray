@@ -15,4 +15,9 @@ def preprocess_image(image: np.ndarray) -> np.ndarray:
         else:
             image = np.zeros_like(image, dtype=np.uint8)
 
-    return apply_histogram_equalization(image)
+    image = apply_histogram_equalization(image)
+
+    # Convert grayscale to RGB by replicating channels (YOLO expects 3 channels)
+    image = np.stack([image] * 3, axis=-1)
+
+    return image
